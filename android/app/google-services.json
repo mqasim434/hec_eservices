@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "69404098603",
+    "project_id": "hec-eservices-3902f",
+    "storage_bucket": "hec-eservices-3902f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:69404098603:android:8165aa11741f7817faea6e",
+        "android_client_info": {
+          "package_name": "com.example.hec_eservices"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "69404098603-r2220p4osdlbiujp32cmthtdek0s10pv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0T8WICn60u4F5knUxye6nOQ1-Of6bRK0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "69404098603-r2220p4osdlbiujp32cmthtdek0s10pv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
