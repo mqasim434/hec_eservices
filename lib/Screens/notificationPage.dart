@@ -23,7 +23,7 @@ class _NotificationPageState extends State<NotificationPage> {
           elevation: 0,
           backgroundColor: Colors.blueGrey[50],
           automaticallyImplyLeading: false,
-          title: Text(
+          title: const Text(
             "Notifications",
             style: TextStyle(color: Colors.black),
           ),
@@ -35,7 +35,7 @@ class _NotificationPageState extends State<NotificationPage> {
               backgroundColor: Colors.blueGrey[50],
               floating: true,
               automaticallyImplyLeading: false,
-              title: Text("Earlier",
+              title: const Text("Earlier",
                   style: TextStyle(color: Colors.black, fontSize: 14)),
             ),
             SliverList(
@@ -54,27 +54,29 @@ class _NotificationPageState extends State<NotificationPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
+        backgroundColor: MyColors.greenColor,
         child: SvgPicture.asset(
           'assets/degree.svg',
           height: 30,
           color: Colors.white,
         ),
-        backgroundColor: MyColors.greenColor,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: MyBottomNav(
         initialSelectedIndex: 2,
-        onSeleted: (index){
+        onSeleted: (index) {
           print("HELLO");
-          if (index != 0) {
+          if (index != 2) {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) {
-                  return index == 1
-                      ? ProfilePage()
-                      : index == 2
-                      ? NotificationPage()
-                      : MorePage();
-                }));
+              return index == 0
+                  ? MyHomePage()
+                  : index == 1
+                      ? const ProfilePage()
+                      : index == 3
+                          ? const MorePage()
+                          : NotificationPage();
+            }));
           }
         },
       ),

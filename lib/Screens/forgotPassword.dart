@@ -21,13 +21,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
         elevation: 0,
         backgroundColor: Colors.blueGrey[50],
 
       ),
       body: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -36,15 +36,15 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               "assets/logo.png",
               height: 100,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white,
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                         color: Colors.black12,
                         blurRadius: 5,
@@ -66,7 +66,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         )),
                   ),
                   Container(
-                    margin: EdgeInsets.only(bottom: 10),
+                    margin: const EdgeInsets.only(bottom: 10),
                     child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -81,7 +81,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     children: List.generate(Types.length, (index) {
                       return RectangleToggleButton(
                         Label: Types[index],
-                        svg: "assets/icons/email.svg",
+                        svg: "assets/email.svg",
                         selected: selectedType == index ? true : false,
                         onSelected: (value) {
                           setState(() {
@@ -93,15 +93,15 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     }),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 10),
+                    margin: const EdgeInsets.only(top: 10),
                     child: TextFormField(
                       decoration: InputDecoration(
                           labelText: Types[selectedType],
-                          contentPadding: EdgeInsets.all(15),
-                          border: OutlineInputBorder()),
+                          contentPadding: const EdgeInsets.all(15),
+                          border: const OutlineInputBorder()),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
 
@@ -116,8 +116,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             borderRadius: BorderRadius.circular(5),
                             gradient: MyColors.gradient3
                         ),
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        child: Center(child: Text("Send Code",style: TextStyle(color: Colors.white),)))),
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        child: const Center(child: Text("Send Code",style: TextStyle(color: Colors.white),)))),
                   )
                 ],
               ),

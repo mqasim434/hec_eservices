@@ -36,7 +36,7 @@ class _HECContactState extends State<HECContact> {
                       "55 B Street, Block B2 Block B 2 Gulberg III, Lahore, Punjab 54000, Pakistan",
                   Phone: "+92-42-99263092, 94-96",
                   Mail: "info@Hec.gov.pk",
-                  Photo: "https://picsum.photos/400/400",
+                  Photo: "https://i2.paktive.com/pnrm/51843723.jpg",
                 ),
                 ContactContainer(
                   textTheme: textTheme,
@@ -45,7 +45,7 @@ class _HECContactState extends State<HECContact> {
                       "55 B Street, Block B2 Block B 2 Gulberg III, Lahore, Punjab 54000, Pakistan",
                   Phone: "+92-42-99263092, 94-96",
                   Mail: "info@Hec.gov.pk",
-                  Photo: "https://picsum.photos/400/400",
+                  Photo: "https://pk.top10place.com/img_files/270983062975626",
                 ),
                 ContactContainer(
                   textTheme: textTheme,
@@ -54,7 +54,7 @@ class _HECContactState extends State<HECContact> {
                       "55 B Street, Block B2 Block B 2 Gulberg III, Lahore, Punjab 54000, Pakistan",
                   Phone: "+92-42-99263092, 94-96",
                   Mail: "info@Hec.gov.pk",
-                  Photo: "https://picsum.photos/400/400",
+                  Photo: "https://i.dawn.com/primary/2019/12/5e018728b14d7.jpg",
                 ),
                 SizedBox(
                   height: 60,

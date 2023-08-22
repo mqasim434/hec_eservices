@@ -35,19 +35,19 @@ class _IntroScreenState extends State<IntroScreen> {
               },
               controller: tabController,
               children: [
-                IntroPage(
+                const IntroPage(
                   Pic: "assets/graduation2Pic.jpg",
                   Title: "Sign up for free",
                   Subtitle:
                   "Sign in with your HEC - E Services Account. If you don't already have an HEC - E Services Account, sign up for free by tapping on the sign up button",
                 ),
-                IntroPage(
+                const IntroPage(
                   Pic: "assets/graduationPic.jpg",
                   Title: "Complete Your Profile",
                   Subtitle:
                   "Complete your common Profile by filling in the profile form",
                 ),
-                IntroPage(
+                const IntroPage(
                   Pic: "assets/mobileuserPic.jpg",
                   Title: "Make Yourself Eligible",
                   Subtitle:
@@ -56,7 +56,7 @@ class _IntroScreenState extends State<IntroScreen> {
               ],
             ),
             Container(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -71,14 +71,14 @@ class _IntroScreenState extends State<IntroScreen> {
                                 ? Colors.white
                                 : Colors.white38,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
                         ],
                       );
                     }),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 100,
                   ),
                   Align(
@@ -86,17 +86,17 @@ class _IntroScreenState extends State<IntroScreen> {
                         onTap: () {
                           Navigator.pushReplacement(context,
                               MaterialPageRoute(builder: (context) {
-                                return SignIn();
+                                return const SignIn();
                               }));
                         },
                         child: Container(
                             width: double.maxFinite,
-                            margin: EdgeInsets.symmetric(vertical: 5),
+                            margin: const EdgeInsets.symmetric(vertical: 5),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
                                 color: Colors.white),
-                            padding: EdgeInsets.symmetric(vertical: 15),
-                            child: Center(
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            child: const Center(
                                 child: Text(
                                   "Sign In",
                                   style: TextStyle(color: MyColors.greenColor),
@@ -106,10 +106,10 @@ class _IntroScreenState extends State<IntroScreen> {
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                              return Register();
+                              return const Register();
                             }));
                       },
-                      child: Text("Sign Up", style: TextStyle(color: Colors.white)))
+                      child: const Text("Sign Up", style: TextStyle(color: Colors.white)))
                 ],
               ),
             ),
@@ -121,10 +121,10 @@ class _IntroScreenState extends State<IntroScreen> {
                     onPressed: () {
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) {
-                            return SignIn();
+                            return const SignIn();
                           }));
                     },
-                    child: Text("Skip", style: TextStyle(color: Colors.white))),
+                    child: const Text("Skip", style: TextStyle(color: Colors.white))),
               ),
             )
           ],
@@ -153,7 +153,7 @@ class IntroPage extends StatelessWidget {
                 image: AssetImage(Pic),
                 fit: BoxFit.cover,
                 opacity: 0.2,
-                colorFilter: ColorFilter.mode(MyColors.greenColor, BlendMode.overlay),
+                colorFilter: const ColorFilter.mode(MyColors.greenColor, BlendMode.overlay),
             ),
             gradient: MyColors.gradient1,
           ),
@@ -161,26 +161,26 @@ class IntroPage extends StatelessWidget {
         Align(
           alignment: Alignment.topLeft,
           child: Transform.translate(
-              offset: Offset(0, -50),
+              offset: const Offset(0, -50),
               child: SvgPicture.asset(
-                'assets/icons/q1Circle.svg',
+                'assets/q1Circle.svg',
                 height: 200,
               )),
         ),
         Align(
           alignment: Alignment.bottomRight,
           child: Transform.translate(
-              offset: Offset(100, 100),
+              offset: const Offset(100, 100),
               child: Transform.rotate(
                   angle: pi / 12 * 18.2,
                   child: SvgPicture.asset(
-                    'assets/icons/fullCircles.svg',
+                    'assets/fullCircles.svg',
                     height: 200,
                   ))),
         ),
         Center(
           child: Container(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -190,7 +190,7 @@ class IntroPage extends StatelessWidget {
                         .textTheme
                         .headline6!
                         .copyWith(color: Colors.white)),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text(

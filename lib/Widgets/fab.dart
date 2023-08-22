@@ -1,30 +1,39 @@
-import 'package:hec_eservices/Screens/perspectiveCrop.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:fluttericon/linearicons_free_icons.dart';
+import 'package:hec_eservices/Image_Crop/perspectiveCrop.dart';
+import 'package:hec_eservices/Screens/Applicatins_Screens/detailsOfDegree.dart';
 
 import 'package:hec_eservices/utils/MyColors.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 
 class CenterDockedFAB extends StatelessWidget {
-  const CenterDockedFAB({
-    Key? key,
-  }) : super(key: key);
+  const CenterDockedFAB({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(boxShadow: [
+      decoration: BoxDecoration(boxShadow: const [
         BoxShadow(blurRadius: 5, offset: Offset(0, 4), color: Colors.black26)
       ], borderRadius: BorderRadius.circular(50), gradient: MyColors.gradient2),
       child: FloatingActionButton(
         elevation: 0,
         backgroundColor: Colors.transparent,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return PerspectiveCrop();
-          }));
+          showDialog(
+              context: context,
+              builder: (context) {
+                return const PerspectiveCrop();
+                // return AlertDialog(
+                //   content: ImageManipulation(),
+                // );
+              });
         },
         tooltip: 'Increment',
         child: SvgPicture.asset(
@@ -45,43 +54,56 @@ class AssistFAB extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 70),
+      margin: const EdgeInsets.only(bottom: 70),
       child: SpeedDial(
-        backgroundColor: Color(0xff344164),
+        backgroundColor: const Color(0xff344164),
         child: SvgPicture.asset(
-          'assets/icons/assist.svg',
+          'assets/assist.svg',
           color: Colors.white,
           height: 30,
         ),
         renderOverlay: false,
         overlayOpacity: 0,
-        buttonSize: Size(45, 45),
-        childrenButtonSize: Size(45, 45),
+        buttonSize: const Size(45, 45),
+        childrenButtonSize: const Size(45, 45),
         children: [
           SpeedDialChild(
-              child: Icon(
+              child: const Icon(
                 FontAwesome5.file_alt,
                 size: 18,
               ),
               label: "Read Instructions"),
           SpeedDialChild(
-              child: Icon(
+              child: const Icon(
                 LineariconsFree.download,
                 size: 18,
               ),
               label: "Download Manual"),
           SpeedDialChild(
               child: SvgPicture.asset(
-                'assets/icons/chat.svg',
+                'assets/chat.svg',
                 width: 18,
               ),
               label: "Online Help"),
           SpeedDialChild(
               child: SvgPicture.asset(
-                'assets/icons/chat.svg',
+                'assets/chat.svg',
                 width: 18,
               ),
               label: "Chat"),
+          SpeedDialChild(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailsofDegree(),
+                  ),
+                );
+              },
+              child: const Icon(
+                Icons.add,
+              ),
+              label: "New Application"),
         ],
       ),
     );

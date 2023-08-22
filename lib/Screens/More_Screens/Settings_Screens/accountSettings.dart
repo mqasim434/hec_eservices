@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hec_eservices/Models/UserModel.dart';
 import 'package:hec_eservices/Screens/More_Screens/Settings_Screens/emailUpdate.dart';
 import 'package:hec_eservices/Screens/homepage.dart';
 import 'package:hec_eservices/Screens/morePage.dart';
@@ -32,7 +33,7 @@ class _AccountSettingState extends State<AccountSetting> {
             style: TextStyle(color: Colors.black),
           ),
         ),
-        // floatingActionButton: AssistFAB(),
+        // floatingActionButton: AssistFAB(
         body: Container(
           padding: EdgeInsets.all(10),
           child: SingleChildScrollView(
@@ -52,7 +53,7 @@ class _AccountSettingState extends State<AccountSetting> {
                 ),
                 Toffee2(
                     Title: "Email",
-                    Subtitle: "mq30003@gmail.com",
+                    Subtitle: '',
                     svg: "assets/email.svg",
                     onPressed: () {
                       Navigator.push(context,
@@ -63,7 +64,7 @@ class _AccountSettingState extends State<AccountSetting> {
                     type: ToffeeType.profile),
                 Toffee2(
                     Title: "Phone",
-                    Subtitle: "+923046268933",
+                    Subtitle: "+92",
                     svg: "assets/phone.svg",
                     onPressed: () {
                       MyBottomSheet().showSnackbar(

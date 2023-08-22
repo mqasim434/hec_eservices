@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hec_eservices/Screens/homepage.dart';
 import 'package:hec_eservices/Screens/notificationPage.dart';
 import 'package:hec_eservices/Screens/profile.dart';
 import 'package:hec_eservices/Widgets/bottomNav.dart';
@@ -28,17 +29,17 @@ class _MorePageState extends State<MorePage> {
       body: Scaffold(
         extendBody: true,
         appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.black),
+          iconTheme: const IconThemeData(color: Colors.black),
           elevation: 0,
           automaticallyImplyLeading: false,
           backgroundColor: Colors.blueGrey[50],
-          title: Text(
+          title: const Text(
             "More",
             style: TextStyle(color: Colors.black),
           ),
         ),
         body: Container(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: Column(
             children: [
               Toffee2(
@@ -46,7 +47,7 @@ class _MorePageState extends State<MorePage> {
                 svg: "assets/contact.svg",
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return HECContact();
+                    return const HECContact();
                   }));
                 },
                 type: ToffeeType.setting,
@@ -57,7 +58,7 @@ class _MorePageState extends State<MorePage> {
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return FAQ();
+                      return const FAQ();
                     }));
                   },
                   type: ToffeeType.setting),
@@ -67,7 +68,7 @@ class _MorePageState extends State<MorePage> {
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return UserGuide();
+                      return const UserGuide();
                     }));
                   },
                   type: ToffeeType.setting),
@@ -77,7 +78,7 @@ class _MorePageState extends State<MorePage> {
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return TrackComplaint();
+                      return const TrackComplaint();
                     }));
                   },
                   type: ToffeeType.setting),
@@ -100,7 +101,7 @@ class _MorePageState extends State<MorePage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return Settings();
+                          return const Settings();
                         },
                       ),
                     );
@@ -112,26 +113,28 @@ class _MorePageState extends State<MorePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
+        backgroundColor: MyColors.greenColor,
         child: SvgPicture.asset(
           'assets/degree.svg',
           height: 30,
           color: Colors.white,
         ),
-        backgroundColor: MyColors.greenColor,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: MyBottomNav(
         initialSelectedIndex: 3,
         onSeleted: (index){
           print("HELLO");
-          if (index != 0) {
+          if (index != 3) {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) {
                   return index == 1
-                      ? ProfilePage()
+                      ? const ProfilePage()
                       : index == 2
-                      ? NotificationPage()
-                      : MorePage();
+                      ? const NotificationPage()
+                      : index ==0
+                      ? MyHomePage()
+                      : const MorePage();
                 }));
           }
         },

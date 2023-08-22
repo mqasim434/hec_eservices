@@ -1,9 +1,15 @@
+import 'dart:convert';
+
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hec_eservices/Screens/Register.dart';
 import 'package:hec_eservices/Screens/homepage.dart';
 import 'package:hec_eservices/utils/MyColors.dart';
 import 'package:flutter/material.dart';
 import 'package:hec_eservices/Screens/forgotPassword.dart';
-// import 'package:fluttericon/font_awesome5_icons.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
+import 'package:hec_eservices/utils/config.dart';
+import 'package:http/http.dart' as http;
+import 'package:hec_eservices/Models/UserModel.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -15,11 +21,78 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   bool isPasswordVisible = false;
   bool rememberMe = false;
+
+  TextEditingController _cnicController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  Future<void> loginUser(BuildContext context) async {
+    String cnic = _cnicController.text.toString();
+    String password = _passwordController.text.toString();
+
+    var endPoint = "$baseUrl/login";
+    print('login');
+    try {
+      var response = await http.post(
+        Uri.parse(endPoint),
+        body: {
+          'cnic': cnic,
+          'password': password,
+        },
+      );
+      if (response.statusCode == 200) {
+        print('Login successful');
+        UserModel.CurrentUserCnic = _cnicController.text.toString();
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Login Successfull'),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return MyHomePage();
+                  }));
+                },
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+      } else {
+        // Login failed, handle the response accordingly
+        // Fluttertoast.showToast(
+        //   msg: 'Login error: ${response.statusCode}',
+        //   toastLength: Toast.LENGTH_SHORT,
+        // );
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Login Failed'),
+            content: Text('Error Code: ${response.statusCode}'),
+            actions: [
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
+    } catch (error) {
+      // Fluttertoast.showToast(
+      //   msg: 'Login error: $error',
+      //   toastLength: Toast.LENGTH_SHORT,
+      // );
+      print(error);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -28,15 +101,15 @@ class _SignInState extends State<SignIn> {
               "assets/HEC-Logo.png",
               height: 100,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white,
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                         color: Colors.black12,
                         blurRadius: 5,
@@ -57,39 +130,41 @@ class _SignInState extends State<SignIn> {
                         )),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 10),
+                    margin: const EdgeInsets.only(top: 10),
                     child: TextFormField(
-                      decoration: InputDecoration(
-                          labelText: "CNIC/Passport",
+                      controller: _cnicController,
+                      decoration: const InputDecoration(
+                          labelText: "CNIC",
                           contentPadding: EdgeInsets.all(15),
                           border: OutlineInputBorder()),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 10),
+                    margin: const EdgeInsets.only(top: 10),
                     child: TextFormField(
+                      controller: _passwordController,
                       obscureText: !isPasswordVisible,
                       decoration: InputDecoration(
-                          // suffixIcon: IconButton(
-                          //   onPressed: () {
-                          //     setState(() {
-                          //       isPasswordVisible = !isPasswordVisible;
-                          //     });
-                          //   },
-                          //   // icon: Icon(
-                          //   //   !isPasswordVisible
-                          //   //       ? FontAwesome5.eye
-                          //   //       : FontAwesome5.eye_slash,
-                          //   //   size: 20,
-                          //   //   color: Colors.black26,
-                          //   // ),
-                          // ),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                isPasswordVisible = !isPasswordVisible;
+                              });
+                            },
+                            icon: Icon(
+                              !isPasswordVisible
+                                  ? FontAwesome5.eye
+                                  : FontAwesome5.eye_slash,
+                              size: 20,
+                              color: Colors.black26,
+                            ),
+                          ),
                           labelText: "Password",
-                          contentPadding: EdgeInsets.all(15),
-                          border: OutlineInputBorder()),
+                          contentPadding: const EdgeInsets.all(15),
+                          border: const OutlineInputBorder()),
                     ),
                   ),
                   Row(
@@ -105,7 +180,7 @@ class _SignInState extends State<SignIn> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
-                              margin: EdgeInsets.only(
+                              margin: const EdgeInsets.only(
                                   top: 10, right: 10, bottom: 10),
                               height: 20,
                               width: 24,
@@ -123,7 +198,7 @@ class _SignInState extends State<SignIn> {
                                     }),
                               ),
                             ),
-                            Text("Remember Me")
+                            const Text("Remember Me")
                           ],
                         ),
                       ),
@@ -133,33 +208,36 @@ class _SignInState extends State<SignIn> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return ForgotPassword();
+                                  return const ForgotPassword();
                                 },
                               ),
                             );
                           },
-                          child: Text("Forgot Your Password?")),
+                          child: const Text("Forgot Your Password?")),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Align(
                     child: InkWell(
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context){return MyHomePage();}));
-                        },
-                        child: Container(
-                            width: double.maxFinite,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                gradient: MyColors.gradient3),
-                            padding: EdgeInsets.symmetric(vertical: 15),
-                            child: Center(
-                                child: Text(
-                              "SIGN IN",
-                              style: TextStyle(color: Colors.white),
-                            )))),
+                      onTap: () {
+                        loginUser(context);
+                      },
+                      child: Container(
+                        width: double.maxFinite,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            gradient: MyColors.gradient3),
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        child: const Center(
+                          child: Text(
+                            "SIGN IN",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
                   )
                 ],
               ),
@@ -167,15 +245,15 @@ class _SignInState extends State<SignIn> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Don't Have Account?"),
+                const Text("Don't Have Account?"),
                 TextButton(
                     onPressed: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return Register();
+                        return const Register();
                       }));
                     },
-                    child: Text("Sign up Now!")),
+                    child: const Text("Sign up Now!")),
               ],
             ),
           ],

@@ -23,81 +23,106 @@ class _RectangleToggleButtonState extends State<RectangleToggleButton> {
   bool? isSelected;
   @override
   Widget build(BuildContext context) {
-    isSelected=widget.selected??false;
+    isSelected = widget.selected ?? false;
     return InkWell(
-      onTap: (){
+      onTap: () {
         setState(() {
-          isSelected=!isSelected!;
+          isSelected = !isSelected!;
           widget.onSelected(isSelected!);
         });
       },
-      child:
-      isSelected!?
-      Container(
-        width: 70,
-        height: 70,
-        margin: EdgeInsets.only(top: 5,right: 5,bottom: 5),
-
-        decoration:
-        BoxDecoration(gradient: MyColors.gradient1,borderRadius: BorderRadius.circular(5))
-        ,
-        child: Stack(
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Column(
-
-                mainAxisAlignment: MainAxisAlignment.center,
+      child: isSelected!
+          ? Container(
+              width: 70,
+              height: 70,
+              margin: const EdgeInsets.only(top: 5, right: 5, bottom: 5),
+              decoration: BoxDecoration(
+                  gradient: MyColors.gradient1,
+                  borderRadius: BorderRadius.circular(5)),
+              child: Stack(
                 children: [
-                  // SvgPicture.asset(widget.svg,color: Colors.white,height: 30,),
-                  Text(widget.Label,style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.white),textAlign: TextAlign.center,)
+                  Align(
+                    alignment: Alignment.center,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // SvgPicture.asset(widget.svg,color: Colors.white,height: 30,),
+                        Text(
+                          widget.Label,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(color: Colors.white),
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    ),
+                  ),
+                  Align(
+                      alignment: Alignment.topRight,
+                      child: Container(
+                          padding: const EdgeInsets.all(5),
+                          child: const CircleAvatar(
+                            radius: 10,
+                            backgroundColor: Colors.white,
+                            child: Icon(
+                              Icons.check,
+                              size: 20,
+                            ),
+                          ))),
                 ],
               ),
-            ),
-            Align(
-                alignment: Alignment.topRight,
-                child: Container(padding: EdgeInsets.all(5),child: CircleAvatar(child: Icon(Icons.check,size: 20,),radius: 10,backgroundColor: Colors.white,))),
-          ],
-        ),
-      ):
-      Container(
-        margin: EdgeInsets.only(top: 5,right: 5,bottom: 5),
-
-        child: DottedBorder(
-          radius: Radius.circular(5),
-          borderType: BorderType.RRect,
-          strokeWidth: 1,
-          padding: EdgeInsets.all(0),
-          child: Container(
-            width: 70,
-            height: 70,
-
-
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.center,
-                  child: Column(
-
-                    mainAxisAlignment: MainAxisAlignment.center,
+            )
+          : Container(
+              margin: const EdgeInsets.only(top: 5, right: 5, bottom: 5),
+              child: DottedBorder(
+                radius: const Radius.circular(5),
+                borderType: BorderType.RRect,
+                strokeWidth: 1,
+                padding: const EdgeInsets.all(0),
+                child: Container(
+                  width: 70,
+                  height: 70,
+                  child: Stack(
                     children: [
-                      // SvgPicture.asset(widget.svg,color: Colors.black,height: 30,),
-                      Text(widget.Label,style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.black),textAlign: TextAlign.center)
+                      Align(
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // SvgPicture.asset(widget.svg,color: Colors.black,height: 30,),
+                            Text(widget.Label,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2!
+                                    .copyWith(color: Colors.black),
+                                textAlign: TextAlign.center)
+                          ],
+                        ),
+                      ),
+                      if (isSelected!)
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            child: const CircleAvatar(
+                              radius: 10,
+                              backgroundColor: Colors.white,
+                              child: Icon(
+                                Icons.check,
+                                size: 20,
+                              ),
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),
-                if(isSelected!)Align(
-                    alignment: Alignment.topRight,
-                    child: Container(padding: EdgeInsets.all(5),child: CircleAvatar(child: Icon(Icons.check,size: 20,),radius: 10,backgroundColor: Colors.white,))),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 }
-
 
 class RectangleToggleButton2 extends StatefulWidget {
   final Function(bool) onSelected;
@@ -107,7 +132,6 @@ class RectangleToggleButton2 extends StatefulWidget {
   RectangleToggleButton2({
     required this.onSelected,
     required this.Label,
-
     this.selected,
     Key? key,
   }) : super(key: key);
@@ -120,49 +144,57 @@ class _RectangleToggleButton2State extends State<RectangleToggleButton2> {
   bool? isSelected;
   @override
   Widget build(BuildContext context) {
-    isSelected=widget.selected??false;
+    isSelected = widget.selected ?? false;
     return InkWell(
       borderRadius: BorderRadius.circular(10),
-      onTap: (){
+      onTap: () {
         setState(() {
-          isSelected=!isSelected!;
+          isSelected = !isSelected!;
           widget.onSelected(isSelected!);
         });
       },
-      child:
-      isSelected!?
-      Container(
-
-        height: 30,
-        margin: EdgeInsets.only(top: 5,right: 5,bottom: 5),
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        decoration:
-        BoxDecoration(gradient: MyColors.gradient1,borderRadius: BorderRadius.circular(5))
-        ,
-        child: Align(
-          alignment: Alignment.center,
-          child: Text(widget.Label,style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.white),),
-        ),
-      ):
-      Container(
-        margin: EdgeInsets.only(top: 5,right: 5,bottom: 5),
-        child: DottedBorder(
-          radius: Radius.circular(5),
-          borderType: BorderType.RRect,
-          strokeWidth: 1,
-          padding: EdgeInsets.all(0),
-          child: Container(
-
-            height: 30,
-            padding: EdgeInsets.symmetric(horizontal: 10),
-
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(widget.Label,style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.black),),
+      child: isSelected!
+          ? Container(
+              height: 30,
+              margin: const EdgeInsets.only(top: 5, right: 5, bottom: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                  gradient: MyColors.gradient1,
+                  borderRadius: BorderRadius.circular(5)),
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  widget.Label,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2!
+                      .copyWith(color: Colors.white),
+                ),
+              ),
+            )
+          : Container(
+              margin: const EdgeInsets.only(top: 5, right: 5, bottom: 5),
+              child: DottedBorder(
+                radius: const Radius.circular(5),
+                borderType: BorderType.RRect,
+                strokeWidth: 1,
+                padding: const EdgeInsets.all(0),
+                child: Container(
+                  height: 30,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      widget.Label,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText2!
+                          .copyWith(color: Colors.black),
+                    ),
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 }
