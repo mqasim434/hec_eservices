@@ -1,7 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
+import 'package:hec_eservices/Models/UserModel.dart';
 import 'package:hec_eservices/Screens/Applicatins_Screens/detailsOfDegree.dart';
+import 'package:hec_eservices/Screens/More_Screens/Settings_Screens/accountSettings.dart';
+import 'package:hec_eservices/utils/config.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import 'package:lottie/lottie.dart';
 
 import '../../Widgets/bottomNav.dart';
 import '../../Widgets/fab.dart';
@@ -20,6 +27,35 @@ class VerifyDetails extends StatefulWidget {
 class _VerifyDetailsState extends State<VerifyDetails> {
   bool verify1 = false;
   bool verify2 = false;
+  bool isLoading = true;
+
+  UserModel currentUser = UserModel();
+  Future<dynamic> getUserData() async {
+    try {
+      var cnic = UserModel.CurrentUserCnic.toString();
+      var endPoint = "$baseUrl/getUser/$cnic";
+      var url = Uri.parse(endPoint);
+      var user = await http.get(url);
+      if (user.statusCode == 200) {
+        currentUser = UserModel.fromJson(json.decode(user.body));
+        setState(() {
+          isLoading = false;
+        });
+      } else {
+        print('User Not Found');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getUserData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,23 +121,23 @@ class _VerifyDetailsState extends State<VerifyDetails> {
                           .copyWith(color: Colors.black),
                     )),
               ),
-              const TwoColumnInfo(
+              TwoColumnInfo(
                 name: "Full Name",
-                Value: "Muhammad Qasim",
+                Value:
+                    '${currentUser.firstName.toString()} ${currentUser.lastName.toString()}',
               ),
-              const TwoColumnInfo(
+              TwoColumnInfo(
                 name: "Gender",
-                Value: "Male",
+                Value: currentUser.gender.toString(),
               ),
               TwoColumnInfo(
                 name: "Date of Birth",
-                Value:
-                    "${DateFormat("yyyy-MM-dd").format(DateTime(2001, 12, 21))}",
+                Value: currentUser.dateOfBirth.toString(),
               ),
-              const TwoColumnInfo(
+              TwoColumnInfo(
                 name: "Mailing Address",
                 Value:
-                    "Daulat Nagar, City Gujrat, Tehsil Gujrat, District Gujrat , 50900, Pakistan",
+                    "${currentUser.address.toString()}, City ${currentUser.city.toString()}, Tehsil ${currentUser.city.toString()}, District ${currentUser.district.toString()} , ${currentUser.postalCode.toString()}, ${currentUser.country.toString()}",
               ),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 10),
@@ -138,34 +174,30 @@ class _VerifyDetailsState extends State<VerifyDetails> {
                     )),
               ),
               Container(
-                margin: const EdgeInsets.all(10),
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    boxShadow: [
-                      const BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 5,
-                          offset: Offset(0, 3))
-                    ]),
-                child: const Column(
-                  children: [
-                    SelectedDegreeExpansionTile(
-                      degree: "Bachelor (14 Years Degree)",
-                      department: "Engineering & Technology",
-                      year: "2023",
-                      university: "University of Gujrat, Gujrat",
-                    ),
-                    SelectedDegreeExpansionTile(
-                      degree: "Bachelor (14 Years Degree)",
-                      department: "Information Technology",
-                      year: "2023",
-                      university: "University of Gujrat, Gujrat",
-                    ),
-                  ],
-                ),
-              ),
+                  margin: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      boxShadow: [
+                        const BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 5,
+                            offset: Offset(0, 3))
+                      ]),
+                  child: Container(
+                    height: 180,
+                    child: ListView.builder(
+                        itemCount: UserModel.degrees.length,
+                        itemBuilder: (context, index) {
+                          return const SelectedDegreeExpansionTile(
+                            degree: "Bachelor (14 Years Degree)",
+                            department: "Engineering & Technology",
+                            year: "2023",
+                            university: "University of Gujrat, Gujrat",
+                          );
+                        }),
+                  )),
               Container(
                 margin: const EdgeInsets.only(top: 10),
                 child: Align(
@@ -214,7 +246,54 @@ class _VerifyDetailsState extends State<VerifyDetails> {
               ),
               Align(
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => Container(
+                        height: 200,
+                        child: AlertDialog(
+                          title: const Text(
+                            'Your Application has been submitted',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                          actions: [
+                            Center(
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                      builder: (context) => MyHomePage(),
+                                    ),
+                                        (route) => false, // This line clears the stack
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  color: MyColors.greenColor,
+                                  child: const Center(
+                                    child: Text(
+                                      'Ok',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                          // content: SizedBox(
+                          //     width: 250,
+                          //     height: 250,
+                          //     child: Lottie.asset(
+                          //         'assets/animations/submitted.json')),
+                        ),
+                      ),
+                    );
+                  },
                   child: Container(
                     width: double.maxFinite,
                     margin: const EdgeInsets.symmetric(vertical: 20),
@@ -247,8 +326,8 @@ class _VerifyDetailsState extends State<VerifyDetails> {
                 return index == 0
                     ? MyHomePage()
                     : index == 1
-                        ? ProfilePage()
-                        : NotificationPage();
+                        ? const ProfilePage()
+                        : const NotificationPage();
               }));
             }
           }),

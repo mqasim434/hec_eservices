@@ -12,7 +12,8 @@ import '../../notificationPage.dart';
 
 class EducationDetails extends StatefulWidget {
   final bool isViewOnly;
-  const EducationDetails({Key? key, this.isViewOnly = true}) : super(key: key);
+  dynamic data;
+  EducationDetails({Key? key, this.isViewOnly = true,this.data}) : super(key: key);
 
   @override
   _EducationDetailsState createState() => _EducationDetailsState();
@@ -46,27 +47,27 @@ class _EducationDetailsState extends State<EducationDetails> {
               ? SingleChildScrollView(
             child: Column(
               children: [
-                InformationCard(data: const {
-                  "Qulification Level": "Bachelor 14 Years",
-                  "Complete": "True",
-                  "Start Date": "12 Aug, 2019",
-                  "End Date Date": "12 Aug, 2013",
+                InformationCard(data: {
+                  "Qualification Level": widget.data['qualificationLevel'].toString(),
+                  "Complete": widget.data['education'].toString(),
+                  "Start Date": widget.data['startDate'].toString(),
+                  "End Date": widget.data['expectedEndDate'].toString(),
                 }, title: "Qualification", onPressed: () {}),
-                InformationCard(data: const {
-                  "Country": "Pakistan",
-                  "City": "Gujrat",
-                  "Awarding Instititute": "University of Gujrat",
-                  "Progam Title": "Bs Software Engineering",
-                  "Discipline": "Software Engineering",
-                  "Campus": "Marghazar Campus",
-                  "Department": "Software Engineering",
-                  "Degree Type": "Regular",
-                  "Session": "Evening",
-                  "Major": "Software Engineering",
-                  "Area of Research": "Flutter Development",
+                InformationCard(data: {
+                  "Country": widget.data['country'].toString(),
+                  "City": widget.data['country'].toString(),
+                  "Awarding Institute": widget.data['degreeAwardInstitute'].toString(),
+                  "Program Title": widget.data['programTitle'].toString(),
+                  // "Discipline": 'discipline',
+                  "Campus": widget.data['campus'].toString(),
+                  "Department": widget.data['department'].toString(),
+                  "Degree Type": widget.data['degreeType'].toString(),
+                  "Session": widget.data['sessionType'].toString(),
+                  "Major": 'major',
+                  "Area of Research": widget.data['areaOfResearch'].toString(),
                 }, title: "Degree Awarding Institute", onPressed: () {}),
-                InformationCard(data: const {
-                  "Registration / Roll No": "19014198-092",
+                InformationCard(data: {
+                  "Registration / Roll No": widget.data['rollNo'].toString(),
                 }, title: "Degree", onPressed: () {}),
                 const SizedBox(
                   height: 70,
@@ -186,14 +187,9 @@ class _EducationDetailsState extends State<EducationDetails> {
                     ),
                     Page3(
                       onPressed: () {
+                        Navigator.pop(context);
                         setState(() {
-                          selectedPageIndex++;
                         });
-                        pageController.animateToPage(
-                          selectedPageIndex,
-                          curve: Curves.decelerate,
-                          duration: const Duration(milliseconds: 300),
-                        );
                       },
                     ),
                   ],

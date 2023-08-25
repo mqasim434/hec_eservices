@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttericon/entypo_icons.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
+import 'package:hec_eservices/Models/UserModel.dart';
 import 'package:hec_eservices/Screens/Applicatins_Screens/detailsOfDegree.dart';
 import 'package:hec_eservices/Screens/Applicatins_Screens/questionaire.dart';
 import 'package:hec_eservices/Screens/Applicatins_Screens/uploadDocuments.dart';
@@ -23,32 +24,6 @@ class DocumentsDetails extends StatefulWidget {
 class _DocumentsDetailsState extends State<DocumentsDetails> {
   int originalSum = 0;
   int copySum = 0;
-  List<Map> degrees = [
-    {
-      "department": "Engineering & Technology",
-      "session": "2021",
-      "country": "Pakistan",
-      "program": "BS in Software Engineering",
-      "oSum": 0,
-      "cSum": 0
-    },
-    {
-      "department": "Information Technology",
-      "session": "2020",
-      "country": "Pakistan",
-      "program": "BS in Information Technology",
-      "oSum": 0,
-      "cSum": 0
-    },
-    {
-      "department": "Computer Science",
-      "session": "2018",
-      "country": "Pakistan",
-      "program": "BS in Computer Science",
-      "oSum": 0,
-      "cSum": 0
-    },
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -100,21 +75,21 @@ class _DocumentsDetailsState extends State<DocumentsDetails> {
                 constraints: const BoxConstraints(minHeight: 300),
                 child: Column(
                   children: List.generate(
-                    degrees.length,
+                    UserModel.degrees!.length,
                     (index) => ExpandableQuantitySelector(
-                      titleInfo: degrees[index],
+                      titleInfo: UserModel.degrees![index],
                       onSumChange: (oSum, cSum) {
                         setState(() {
-                          degrees[index]["oSum"] = oSum;
-                          degrees[index]["cSum"] = cSum;
-                          int newOSum = 0;
-                          int newCSum = 0;
-                          for (var a in degrees) {
-                            newOSum = newOSum + (a["oSum"] as int);
-                            newCSum = newCSum + (a["cSum"] as int);
-                          }
-                          originalSum = newOSum;
-                          copySum = newCSum;
+                            UserModel.degrees[index]["oSum"] = oSum;
+                            UserModel.degrees[index]["cSum"] = cSum;
+                            int newOSum = 0;
+                            int newCSum = 0;
+                            for (var a in UserModel.degrees) {
+                              newOSum = newOSum + ((a["oSum"]) as int);
+                              newCSum = newCSum + ((a["cSum"]) as int);
+                            }
+                            originalSum = newOSum;
+                            copySum = newCSum;
                         });
                       },
                     ),
@@ -124,6 +99,9 @@ class _DocumentsDetailsState extends State<DocumentsDetails> {
               Align(
                 child: InkWell(
                     onTap: () {
+                      UserModel.applicationData['originalDocumentFee'] = originalSum;
+                      UserModel.applicationData['photocopyDocumentFee'] = originalSum;
+                      print('HEELO');
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -237,7 +215,7 @@ class _DocumentsDetailsState extends State<DocumentsDetails> {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) {
                 return index == 0
-                    ?  MyHomePage()
+                    ? MyHomePage()
                     : index == 1
                         ? const ProfilePage()
                         : const NotificationPage();
@@ -473,7 +451,7 @@ class _ExpandableQuantitySelectorState
                     const SizedBox(
                       width: 10,
                     ),
-                    Text(widget.titleInfo['session']),
+                    Text(widget.titleInfo['sessionType'].toString()),
                     const SizedBox(
                       width: 10,
                     ),
@@ -489,7 +467,7 @@ class _ExpandableQuantitySelectorState
                     const SizedBox(
                       width: 10,
                     ),
-                    Text(widget.titleInfo['country']),
+                    Text(widget.titleInfo['qualificationLevel'].toString()),
                   ],
                 ),
               ],
@@ -497,7 +475,7 @@ class _ExpandableQuantitySelectorState
             const SizedBox(
               height: 10,
             ),
-            Text(widget.titleInfo['program']),
+            Text(widget.titleInfo['universityName'].toString()),
           ],
         ),
       ),

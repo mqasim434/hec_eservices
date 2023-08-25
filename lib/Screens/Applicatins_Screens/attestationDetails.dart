@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
+import 'package:hec_eservices/Models/UserModel.dart';
 import 'package:hec_eservices/Screens/Applicatins_Screens/detailsOfDegree.dart';
 import 'package:hec_eservices/Screens/Applicatins_Screens/questionaire.dart';
 
@@ -26,7 +27,7 @@ class _AttestationDetailsState extends State<AttestationDetails> {
   var Modes = ["Inside Pakistan", "Outside Pakistan"];
   @override
   Widget build(BuildContext context) {
-    final bool showFab = MediaQuery.of(context).viewInsets.bottom==0.0;
+    final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
 
     return Scaffold(
       body: Scaffold(
@@ -46,7 +47,7 @@ class _AttestationDetailsState extends State<AttestationDetails> {
             ],
           ),
         ),
-        floatingActionButton: showFab?const AssistFAB():null,
+        floatingActionButton: showFab ? const AssistFAB() : null,
         body: Container(
           padding: const EdgeInsets.all(10),
           child: SingleChildScrollView(
@@ -80,12 +81,12 @@ class _AttestationDetailsState extends State<AttestationDetails> {
                     onTap: () {
                       MyBottomSheet()
                           .showSearchableBottomSheet(
-                          context,
-                          [
-                            'Attestation Through Courrier',
-                            'Walk-In Attestation'
-                          ],
-                          "Qualification Level")
+                              context,
+                              [
+                                'Attestation Through Courrier',
+                                'Walk-In Attestation'
+                              ],
+                              "Qualification Level")
                           .then((value) {
                         setState(() {
                           AttestationMode.text = [
@@ -113,7 +114,6 @@ class _AttestationDetailsState extends State<AttestationDetails> {
                       selected: selectedMode == index ? true : false,
                       onSelected: (value) {
                         setState(() {
-
                           selectedMode = index;
                         });
                       },
@@ -130,18 +130,10 @@ class _AttestationDetailsState extends State<AttestationDetails> {
                   onTap: () {
                     MyBottomSheet()
                         .showSearchableBottomSheet(
-                        context,
-                        [
-                          'Gujranwala',
-                          'Lahore'
-                        ],
-                        "District")
+                            context, ['Gujranwala', 'Lahore'], "District")
                         .then((value) {
                       setState(() {
-                        District.text = [
-                          'Gujranwala',
-                          'Lahore'
-                        ][value];
+                        District.text = ['Gujranwala', 'Lahore'][value];
                       });
                     });
                   },
@@ -157,29 +149,44 @@ class _AttestationDetailsState extends State<AttestationDetails> {
                 ),
                 const OrangeInforCard(
                     text:
-                    "Please carefully select the district from where you would send your document for attestation through courier Service. Wrong selection of a district may result in rejection of your case at a later stage."),
+                        "Please carefully select the district from where you would send your document for attestation through courier Service. Wrong selection of a district may result in rejection of your case at a later stage."),
                 Align(
                   child: InkWell(
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context){
-                          return const Questionaire();
-                        }));
-                      }, child: Container(
+                    onTap: () {
+                      String attestationMode = AttestationMode.text.toString();
+                      String fromWhere = Modes[selectedMode];
+                      String district = District.text.toString();
+                      UserModel.applicationData['attestationMode'] = attestationMode;
+                      UserModel.applicationData['fromWhere'] = fromWhere;
+                      UserModel.applicationData['district'] = district;
+                      print('Application Data:${UserModel.applicationData}');
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const Questionaire();
+                      }));
+                    },
+                    child: Container(
                       width: double.maxFinite,
                       margin: const EdgeInsets.symmetric(vertical: 20),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
-                          gradient: MyColors.gradient3
-                      ),
+                          gradient: MyColors.gradient3),
                       padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: const Center(child: Text("Next",style: TextStyle(color: Colors.white),)))),
+                      child: const Center(
+                        child: Text(
+                          "Next",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
                 )
               ],
             ),
           ),
         ),
       ),
-      floatingActionButton:showFab? CenterDockedFAB():null,
+      floatingActionButton: showFab ? CenterDockedFAB() : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       extendBody: true,
       bottomNavigationBar: MyBottomNav(
@@ -188,16 +195,14 @@ class _AttestationDetailsState extends State<AttestationDetails> {
             if (index != 3) {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) {
-                    return index == 0
-                        ?  MyHomePage()
-                        : index == 1
+                return index == 0
+                    ? MyHomePage()
+                    : index == 1
                         ? const ProfilePage()
                         : const NotificationPage();
-                  }));
+              }));
             }
           }),
     );
   }
 }
-
-

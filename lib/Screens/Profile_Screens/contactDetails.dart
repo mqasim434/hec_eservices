@@ -120,14 +120,8 @@ class _ContactDetailsState extends State<ContactDetails> {
   }
 
   @override
-  void initState() {
-    // TODO: implement initState
-    getUserData();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    getUserData();
     final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
     return Scaffold(
             resizeToAvoidBottomInset: true,
@@ -141,7 +135,6 @@ class _ContactDetailsState extends State<ContactDetails> {
                     child: Text("Save"),
                     onPressed: () {
                        updateData();
-                       getUserData();
                       setState(() {
                         isEditing = false;
                       });

@@ -7,6 +7,8 @@ import 'package:hec_eservices/Widgets/bottomNav.dart';
 import 'package:hec_eservices/Widgets/toffee.dart';
 import 'package:hec_eservices/utils/MyColors.dart';
 
+import '../Widgets/fab.dart';
+
 class NotificationPage extends StatefulWidget {
   const NotificationPage({Key? key}) : super(key: key);
 
@@ -51,35 +53,24 @@ class _NotificationPageState extends State<NotificationPage> {
             }, childCount: 20))
           ],
         ),
+        floatingActionButton: AssistFAB(),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: MyColors.greenColor,
-        child: SvgPicture.asset(
-          'assets/degree.svg',
-          height: 30,
-          color: Colors.white,
-        ),
-      ),
+      extendBody: true,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: CenterDockedFAB(),
       bottomNavigationBar: MyBottomNav(
-        initialSelectedIndex: 2,
-        onSeleted: (index) {
-          print("HELLO");
-          if (index != 2) {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) {
-              return index == 0
-                  ? MyHomePage()
-                  : index == 1
-                      ? const ProfilePage()
-                      : index == 3
-                          ? const MorePage()
-                          : NotificationPage();
-            }));
-          }
-        },
-      ),
+          initialSelectedIndex: 2,
+          onSeleted: (index) {
+            if (index != 2)
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) {
+                return index == 0
+                    ? MyHomePage()
+                    : index == 1
+                        ? ProfilePage()
+                        : MorePage();
+              }));
+          }),
     );
   }
 }

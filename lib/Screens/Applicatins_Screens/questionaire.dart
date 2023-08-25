@@ -53,12 +53,12 @@ class _QuestionaireState extends State<Questionaire> {
     return Scaffold(
       body: Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(
+          iconTheme: const IconThemeData(
             color: Colors.black, //change your color here
           ),
           elevation: 0,
           backgroundColor: Colors.blueGrey[50],
-          title: Row(
+          title: const Row(
             children: [
               Icon(FontAwesome.doc_text),
               Text(
@@ -68,13 +68,13 @@ class _QuestionaireState extends State<Questionaire> {
             ],
           ),
         ),
-        floatingActionButton: AssistFAB(),
+        floatingActionButton: const AssistFAB(),
         body: Container(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: Column(
             children: [
               Container(
-                margin: EdgeInsets.only(bottom: 10),
+                margin: const EdgeInsets.only(bottom: 10),
                 child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -85,17 +85,17 @@ class _QuestionaireState extends State<Questionaire> {
                           .copyWith(color: Colors.black),
                     )),
               ),
-              WizardIndicator(
+              const WizardIndicator(
                 selectedIndex: 1,
                 length: 4,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Align(
                   alignment: Alignment.centerLeft,
                   child: Text("Question Answered: $QuestionsAnswered")),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Flexible(
@@ -112,7 +112,7 @@ class _QuestionaireState extends State<Questionaire> {
                         Expanded(flex: 7,
                           child: Align(
                               alignment: Alignment.topLeft,
-                              child: Text(myQuestions[index]["Question"], style: TextStyle(fontSize: 18),)),),
+                              child: Text(myQuestions[index]["Question"], style: const TextStyle(fontSize: 18),)),),
                         Expanded(
                           flex: 3,
                           child: Row(
@@ -123,7 +123,7 @@ class _QuestionaireState extends State<Questionaire> {
                                 selected: myQuestions[index]["Selected"]==null?false:Modes[myQuestions[index]["Selected"] as int]==Modes[ModeIndex]?true:false,
                                 onSelected: (value) {
                                   setState(() {
-                                    pageController.animateToPage(currentPage+1, duration: Duration(milliseconds: 300), curve: Curves.ease);
+                                    pageController.animateToPage(currentPage+1, duration: const Duration(milliseconds: 300), curve: Curves.ease);
                                     myQuestions[index]["Selected"]=ModeIndex;
                                   });
                                 },
@@ -143,28 +143,28 @@ class _QuestionaireState extends State<Questionaire> {
                       if(nextButtonEnabled==false){
                         MyBottomSheet().showSnackbar(context: context, msg: "Please Answer All Questions.",type: SnackBarType.Alert);
                       }else{
-                        Navigator.push(context, MaterialPageRoute(builder: (context){return DocumentsDetails();}));
+                        Navigator.push(context, MaterialPageRoute(builder: (context){return const DocumentsDetails();}));
                       }
                     },
                     child: Container(
                         width: double.maxFinite,
-                        margin: EdgeInsets.symmetric(vertical: 20),
+                        margin: const EdgeInsets.symmetric(vertical: 20),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
                             gradient: nextButtonEnabled?MyColors.gradient3:MyColors.gradient2),
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        child: Center(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        child: const Center(
                             child: Text(
                               "Next",
                               style: TextStyle(color: Colors.white),
                             )))),
               ),
-              SizedBox(height: 70,)
+              const SizedBox(height: 70,)
             ],
           ),
         ),
       ),
-      floatingActionButton: CenterDockedFAB(),
+      floatingActionButton: const CenterDockedFAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       extendBody: true,
       bottomNavigationBar: MyBottomNav(
@@ -176,8 +176,8 @@ class _QuestionaireState extends State<Questionaire> {
                     return index == 0
                         ? MyHomePage()
                         : index == 1
-                        ? ProfilePage()
-                        : NotificationPage();
+                        ? const ProfilePage()
+                        : const NotificationPage();
                   }));
             }
           }),
@@ -204,10 +204,10 @@ class WizardIndicator extends StatelessWidget {
             text: TextSpan(children: [
               TextSpan(
                   text: (selectedIndex + 1).toString(),
-                  style: TextStyle(fontSize: 15, color: MyColors.greenColor)),
+                  style: const TextStyle(fontSize: 15, color: MyColors.greenColor)),
               TextSpan(
                   text: "/${length.toString()}",
-                  style: TextStyle(fontSize: 12, color: Colors.grey)),
+                  style: const TextStyle(fontSize: 12, color: Colors.grey)),
             ]),
           ),
         ),
@@ -217,7 +217,7 @@ class WizardIndicator extends StatelessWidget {
                   (index) {
                 return Expanded(
                   child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 5),
+                    margin: const EdgeInsets.symmetric(horizontal: 5),
                     decoration: BoxDecoration(
                         gradient:
                         index <= selectedIndex ? MyColors.gradient3 : null,

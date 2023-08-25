@@ -31,9 +31,9 @@ class _MyApplicationsState extends State<MyApplications> {
             style: TextStyle(color: Colors.black),
           ),
         ),
-        floatingActionButton:showFab?AssistFAB():null,
+        floatingActionButton:showFab?const AssistFAB():null,
         body: Container(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: CustomScrollView(
 
             slivers: [
@@ -46,8 +46,7 @@ class _MyApplicationsState extends State<MyApplications> {
                 title:
                 // Search Field
                 TextFormField(
-                  decoration: InputDecoration(
-
+                  decoration: const InputDecoration(
                       labelText: "Search by Application ID",
                       contentPadding: EdgeInsets.all(15),
                       border: OutlineInputBorder()),
@@ -55,7 +54,6 @@ class _MyApplicationsState extends State<MyApplications> {
               )
               ,
               SliverList(
-
                   delegate: SliverChildBuilderDelegate((context,int index){
                     return ApplicationCard(
                       onPressed: (){
@@ -68,15 +66,12 @@ class _MyApplicationsState extends State<MyApplications> {
                     );
                   },childCount: 20
                   ))
-
-
-
             ],
 
           ),
         ),
       ),
-      floatingActionButton:showFab? CenterDockedFAB():null,
+      floatingActionButton:showFab? const CenterDockedFAB():null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       extendBody: true,
       bottomNavigationBar: MyBottomNav(
@@ -88,8 +83,8 @@ class _MyApplicationsState extends State<MyApplications> {
                     return index == 0
                         ? MyHomePage()
                         : index == 1
-                        ? ProfilePage()
-                        : NotificationPage();
+                        ? const ProfilePage()
+                        : const NotificationPage();
                   }));
             }
           }),
@@ -118,13 +113,13 @@ class ApplicationCard extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Container(
-          margin: EdgeInsets.only(bottom: 10),
-          padding: EdgeInsets.all(10),
+          margin: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Colors.white,
               boxShadow: [
-                BoxShadow(
+                const BoxShadow(
                     color: Colors.black12,
                     blurRadius: 5,
                     offset: Offset(0, 3))
@@ -135,7 +130,7 @@ class ApplicationCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                         vertical: 5, horizontal: 10),
                     child: Text(Status,style: TextStyle(color: Colors.amber[800]),),
                     decoration: BoxDecoration(
@@ -155,15 +150,15 @@ class ApplicationCard extends StatelessWidget {
                       style: Theme.of(context).textTheme.headline6,
                     ),
                   ),
-                  Icon(Icons.arrow_forward_ios)
+                  const Icon(Icons.arrow_forward_ios)
                 ],
               ),
               Row(
                 children: [
-                  Text("Application ID: "),
+                  const Text("Application ID: "),
                   Text(
                     ApplicationID,
-                    style: TextStyle(fontWeight: FontWeight.w600),
+                    style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                 ],
               )

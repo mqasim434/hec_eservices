@@ -8,6 +8,7 @@ import 'package:hec_eservices/Widgets/bottomSheet.dart';
 import 'package:hec_eservices/Widgets/toffee.dart';
 import 'package:hec_eservices/utils/MyColors.dart';
 
+import '../Widgets/fab.dart';
 import 'More_Screens/faq.dart';
 import 'More_Screens/hecContact.dart';
 import 'More_Screens/settings.dart';
@@ -20,7 +21,6 @@ class MorePage extends StatefulWidget {
   @override
   _MorePageState createState() => _MorePageState();
 }
-
 
 class _MorePageState extends State<MorePage> {
   @override
@@ -110,35 +110,24 @@ class _MorePageState extends State<MorePage> {
             ],
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: MyColors.greenColor,
-        child: SvgPicture.asset(
-          'assets/degree.svg',
-          height: 30,
-          color: Colors.white,
-        ),
+        floatingActionButton: AssistFAB(),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: CenterDockedFAB(),
+      extendBody: true,
       bottomNavigationBar: MyBottomNav(
-        initialSelectedIndex: 3,
-        onSeleted: (index){
-          print("HELLO");
-          if (index != 3) {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) {
-                  return index == 1
-                      ? const ProfilePage()
-                      : index == 2
-                      ? const NotificationPage()
-                      : index ==0
-                      ? MyHomePage()
-                      : const MorePage();
-                }));
-          }
-        },
-      ),
+          initialSelectedIndex: 3,
+          onSeleted: (index) {
+            if (index != 3)
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) {
+                return index == 0
+                    ? MyHomePage()
+                    : index == 1
+                        ? ProfilePage()
+                        : NotificationPage();
+              }));
+          }),
     );
   }
 }

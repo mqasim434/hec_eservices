@@ -57,11 +57,6 @@ class AssistFAB extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 70),
       child: SpeedDial(
         backgroundColor: const Color(0xff344164),
-        child: SvgPicture.asset(
-          'assets/assist.svg',
-          color: Colors.white,
-          height: 30,
-        ),
         renderOverlay: false,
         overlayOpacity: 0,
         buttonSize: const Size(45, 45),
@@ -105,6 +100,11 @@ class AssistFAB extends StatelessWidget {
               ),
               label: "New Application"),
         ],
+        child: SvgPicture.asset(
+          'assets/assist.svg',
+          color: Colors.white,
+          height: 30,
+        ),
       ),
     );
   }

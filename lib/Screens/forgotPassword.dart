@@ -1,7 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:hec_eservices/Widgets/rectangleToggle.dart';
-import 'package:hec_eservices/utils/MyColors.dart';
+import 'dart:math';
 
+import 'package:flutter/material.dart';
+import 'package:hec_eservices/Screens/getOTP.dart';
+import 'package:hec_eservices/utils/MyColors.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({Key? key}) : super(key: key);
@@ -12,11 +15,14 @@ class ForgotPassword extends StatefulWidget {
 
 class _ForgotPasswordState extends State<ForgotPassword> {
   bool isPasswordVisible = false;
-  int selectedType=0;
+  int selectedType = 0;
   bool rememberMe = false;
-  var Types = ["CNIC/POC", "Email"];
-  var siteKey="6LfhvPIdAAAAAGXEXoD3kOv7EN-0xbMNdKP10iKO";
-  var secretKey="6LfhvPIdAAAAAGXEXoD3kOv7EN-0xbMNdKP10iKO";
+
+  TextEditingController emailController = TextEditingController();
+  String email = '';
+  String otp = '';
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +30,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         iconTheme: const IconThemeData(color: Colors.black),
         elevation: 0,
         backgroundColor: Colors.blueGrey[50],
-
       ),
       body: Container(
         padding: const EdgeInsets.all(10),
@@ -51,10 +56,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         offset: Offset(0, 3))
                   ]),
               child: // Name on Degree
-              Column(
+                  Column(
                 children: [
                   Container(
-
                     child: Align(
                         alignment: Alignment.center,
                         child: Text(
@@ -66,37 +70,23 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         )),
                   ),
                   Container(
-                    margin: const EdgeInsets.only(bottom: 10),
+                    margin: const EdgeInsets.only(top: 10),
                     child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Recover Using:",
+                          "Enter your email:",
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2!
                               .copyWith(color: Colors.black),
                         )),
                   ),
-                  Row(
-                    children: List.generate(Types.length, (index) {
-                      return RectangleToggleButton(
-                        Label: Types[index],
-                        svg: "assets/email.svg",
-                        selected: selectedType == index ? true : false,
-                        onSelected: (value) {
-                          setState(() {
-                            print("index:index");
-                            selectedType = index;
-                          });
-                        },
-                      );
-                    }),
-                  ),
                   Container(
                     margin: const EdgeInsets.only(top: 10),
                     child: TextFormField(
+                      controller: emailController,
                       decoration: InputDecoration(
-                          labelText: Types[selectedType],
+                          labelText: 'Email',
                           contentPadding: const EdgeInsets.all(15),
                           border: const OutlineInputBorder()),
                     ),
@@ -104,20 +94,28 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   const SizedBox(
                     height: 10,
                   ),
-
                   Align(
                     child: InkWell(
-                        onTap: (){
-
-                        }, child: Container(
-                        width: double.maxFinite,
-
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            gradient: MyColors.gradient3
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                        child: const Center(child: Text("Send Code",style: TextStyle(color: Colors.white),)))),
+                        onTap: () {
+                          email = emailController.text.toString();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OTPScreen(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                            width: double.maxFinite,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                gradient: MyColors.gradient3),
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            child: const Center(
+                                child: Text(
+                              "Send Code",
+                              style: TextStyle(color: Colors.white),
+                            )))),
                   )
                 ],
               ),

@@ -1,15 +1,20 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hec_eservices/Screens/Profile_Screens/Education_Details/educationPage.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../Models/UserModel.dart';
 import '../../Widgets/bottomNav.dart';
 import '../../Widgets/fab.dart';
 import '../../Widgets/informationCard.dart';
 import '../../utils/MyColors.dart';
+import '../../utils/config.dart';
 import '../Profile_Screens/Education_Details/educationDetails.dart';
 import '../homepage.dart';
 import '../notificationPage.dart';
 import 'attestationDetails.dart';
+import 'package:http/http.dart' as http;
 
 class DetailsofDegree extends StatefulWidget {
   const DetailsofDegree({Key? key}) : super(key: key);
@@ -23,6 +28,7 @@ class _DetailsofDegreeState extends State<DetailsofDegree> {
   @override
   void initState() {
     super.initState();
+    UserModel.degrees!.clear();
     Future.delayed(const Duration(seconds: 1), () {
       showDialog(
           barrierDismissible: false,
@@ -37,6 +43,7 @@ class _DetailsofDegreeState extends State<DetailsofDegree> {
   @override
   Widget build(BuildContext context) {
     final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
+    int? length = 0;
     return Scaffold(
       body: Scaffold(
         floatingActionButton: showFab ? const AssistFAB() : null,
@@ -90,35 +97,85 @@ class _DetailsofDegreeState extends State<DetailsofDegree> {
               Label: "+ Add Details of Degree",
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const EducationDetails(
+                  return EducationDetails(
                     isViewOnly: false,
                   );
                 }));
               },
             ),
             // Degree Cards
-            DegreeInformationCard(
-              type: DegreeInformationCardType.selectable,
-              discipline: "Engineering & Technology",
-              session: "2021",
-              program: "BS Software Engineering",
-              university: "University of Gujrar, Gujrat",
-              title: "Bachelor (16 Years) Degree",
-              onView: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const EducationDetails(
-                    isViewOnly: true,
-                  );
-                }));
-              },
-              onEdit: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const EducationDetails(
-                    isViewOnly: false,
-                  );
-                }));
-              },
-              onDelete: () {},
+            SizedBox(
+              height: 320,
+              child: FutureBuilder<List<dynamic>>(
+                future:
+                    EducationPage.getEducationData(UserModel.CurrentUserCnic),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                        child:
+                            CircularProgressIndicator()); // Loading indicator while data is fetched
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Text('No users found');
+                  } else {
+                    // Display the list of users
+                    return ListView.builder(
+                      itemCount: snapshot.data?.length,
+                      itemBuilder: (context, index) {
+                        final data = snapshot.data?[index];
+
+                        return DegreeInformationCard(
+                          type: DegreeInformationCardType.selectable,
+                          discipline: data['department'],
+                          session: data['sessionType'],
+                          program: data['programTitle'],
+                          university: data['universityName'],
+                          title: data['qualificationLevel'],
+                          onView: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) {
+                                return EducationDetails(
+                                    isViewOnly: true, data: data);
+                              }),
+                            );
+                          },
+                          onEdit: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return EducationDetails(
+                                  isViewOnly: false, data: data);
+                            }));
+                          },
+                          onDelete: () async {
+                            final cnic = UserModel.CurrentUserCnic;
+                            final recordId = data['recordId'].toString();
+                            final url = Uri.parse(
+                                '$baseUrl/deleteEducationData/$cnic/$recordId');
+                            try {
+                              final response = await http.delete(url);
+
+                              if (response.statusCode == 204) {
+                                print('Education record deleted successfully.');
+                              } else if (response.statusCode == 404) {
+                                print('Education record not found.');
+                              } else {
+                                // Handle other error cases
+                                print(
+                                    'Failed to delete education record. Status code: ${response.statusCode}');
+                              }
+                            } catch (e) {
+                              print('Error: $e');
+                            }
+                            setState(() {});
+                          },
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
             ),
             const SizedBox(
               height: 10,
@@ -127,10 +184,18 @@ class _DetailsofDegreeState extends State<DetailsofDegree> {
             Align(
               child: InkWell(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return const AttestationDetails();
-                    }));
+                    if (UserModel.degrees!.isEmpty) {
+                      Fluttertoast.showToast(
+                        msg: 'No Degree Selected',
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                      );
+                    } else {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const AttestationDetails();
+                      }));
+                    }
                   },
                   child: Container(
                       width: double.maxFinite,
@@ -143,7 +208,7 @@ class _DetailsofDegreeState extends State<DetailsofDegree> {
                         "Next",
                         style: TextStyle(color: Colors.white),
                       )))),
-            )
+            ),
           ]),
         ),
       ),
@@ -156,10 +221,10 @@ class _DetailsofDegreeState extends State<DetailsofDegree> {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
             return index == 0
-                ?  MyHomePage()
+                ? MyHomePage()
                 : index == 2
                     ? const NotificationPage()
-                    :  MyHomePage();
+                    : MyHomePage();
           }));
         },
       ),

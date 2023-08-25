@@ -42,41 +42,20 @@ class _SignInState extends State<SignIn> {
       if (response.statusCode == 200) {
         print('Login successful');
         UserModel.CurrentUserCnic = _cnicController.text.toString();
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Login Successfull'),
-            actions: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return MyHomePage();
-                  }));
-                },
-                child: Text('OK'),
-              ),
-            ],
+        Fluttertoast.showToast(
+          msg: 'Login Successful',
+          toastLength: Toast.LENGTH_SHORT,
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MyHomePage(),
           ),
         );
       } else {
-        // Login failed, handle the response accordingly
-        // Fluttertoast.showToast(
-        //   msg: 'Login error: ${response.statusCode}',
-        //   toastLength: Toast.LENGTH_SHORT,
-        // );
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Login Failed'),
-            content: Text('Error Code: ${response.statusCode}'),
-            actions: [
-              ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('OK'),
-              ),
-            ],
-          ),
+        Fluttertoast.showToast(
+          msg: 'Login error: ${response.statusCode}',
+          toastLength: Toast.LENGTH_SHORT,
         );
       }
     } catch (error) {
@@ -133,6 +112,7 @@ class _SignInState extends State<SignIn> {
                     margin: const EdgeInsets.only(top: 10),
                     child: TextFormField(
                       controller: _cnicController,
+                      keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
                           labelText: "CNIC",
                           contentPadding: EdgeInsets.all(15),

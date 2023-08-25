@@ -336,7 +336,7 @@ class _Page2State extends State<Page2> {
     String degreeAwardInstitute = Institute2.text.toString();
     String programTitle = Degree.text.toString();
     String universityName = Country.text.toString();
-    String campus = Institute.text.toString();
+    String campus = Campus.text.toString();
     String department = Department.text.toString();
     String degreeType = DegreeType.text.toString();
     String sessionType = Session.text.toString();

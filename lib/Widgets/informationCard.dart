@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hec_eservices/Models/UserModel.dart';
 import 'package:hec_eservices/utils/MyColors.dart';
 import '../utils/MyColors.dart';
 
@@ -22,32 +23,32 @@ class InformationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 10),
+      margin: const EdgeInsets.only(bottom: 10),
       width: double.infinity,
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Colors.white,
           boxShadow: [
-            BoxShadow(
+            const BoxShadow(
                 color: Colors.black12, blurRadius: 5, offset: Offset(0, 3))
           ]),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
+          SizedBox(
               height: 30,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     title,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   if (showButton == true)
                     IconButton(
                         onPressed: onPressed,
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.edit,
                           size: 20,
                         ))
@@ -70,7 +71,7 @@ class InformationCard extends StatelessWidget {
                           Expanded(child: Text(data.values.elementAt(index))),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                     ],
@@ -88,7 +89,7 @@ class InformationCard extends StatelessWidget {
                           Text(data.values.elementAt(index)),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                     ],
@@ -102,7 +103,7 @@ class InformationCard extends StatelessWidget {
                           Text(data.values.elementAt(index)),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                     ],
@@ -132,6 +133,7 @@ class DegreeInformationCard extends StatefulWidget {
   final VoidCallback onView;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
+  static bool selected=false;
 
   DegreeInformationCard({
     this.type=DegreeInformationCardType.deletable,
@@ -152,13 +154,13 @@ class DegreeInformationCard extends StatefulWidget {
 }
 
 class _DegreeInformationCardState extends State<DegreeInformationCard> {
-  bool selected=true;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.only(bottom: 10),
+        margin: const EdgeInsets.only(bottom: 10),
         width: double.infinity,
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
@@ -174,15 +176,13 @@ class _DegreeInformationCardState extends State<DegreeInformationCard> {
                   Expanded(
                       child: Text(
                         widget.title,
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                       )),
                   Row(
                     children: [
-
-
                       GestureDetector(
                           onTap: widget.onView,
-                          child: Icon(
+                          child: const Icon(
                             Icons.remove_red_eye,
                             size: 20,
                             color: MyColors.greenColor,
@@ -190,15 +190,15 @@ class _DegreeInformationCardState extends State<DegreeInformationCard> {
                       if(widget.type!=DegreeInformationCardType.viewOnly)
                         GestureDetector(
                             onTap: widget.onEdit,
-                            child: Icon(Icons.edit,
+                            child: const Icon(Icons.edit,
                                 size: 20, color: MyColors.blueColor)),
                       if(widget.type!=DegreeInformationCardType.selectable)
                         GestureDetector(
                             onTap: widget.onDelete,
-                            child: Icon(Icons.delete_forever,
+                            child: const Icon(Icons.delete_forever,
                                 size: 20, color: Colors.red)),
                       if(widget.type==DegreeInformationCardType.selectable)
-                        Container(
+                        SizedBox(
                           height: 20,
                           width: 24,
                           child: Align(
@@ -206,9 +206,21 @@ class _DegreeInformationCardState extends State<DegreeInformationCard> {
                             child: Checkbox(
                                 materialTapTargetSize: MaterialTapTargetSize.padded,
                                 activeColor: MyColors.greenColor,
-                                value: selected, onChanged: (value){
+                                value: DegreeInformationCard.selected, onChanged: (value){
                               setState(() {
-                                selected=value!;
+                                if(value==true) {
+                                  UserModel.degrees.add({
+                                    'department': widget.discipline.toString(),
+                                    'sessionType': widget.session.toString(),
+                                    'programTitle': widget.program.toString(),
+                                    'universityName': widget.university.toString(),
+                                    'qualificationLevel': widget.title.toString(),
+                                    'oSum' : 0,
+                                    'cSum' : 0,
+                                  });
+                                  print(UserModel.degrees);
+                                }
+                                DegreeInformationCard.selected=value!;
                               });
                             }),
                           ),
@@ -217,7 +229,7 @@ class _DegreeInformationCardState extends State<DegreeInformationCard> {
                   )
                 ],
               )),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Column(
@@ -227,24 +239,24 @@ class _DegreeInformationCardState extends State<DegreeInformationCard> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text("${widget.discipline}"),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 4,
                     backgroundColor: Colors.grey,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Text("${widget.session}"),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Text("${widget.program}"),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Text("${widget.university}"),

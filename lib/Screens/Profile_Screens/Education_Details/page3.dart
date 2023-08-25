@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hec_eservices/Models/EducationModel.dart';
 import 'package:hec_eservices/Models/UserModel.dart';
@@ -80,6 +82,7 @@ class _Page3State extends State<Page3> {
   void addData() {
     String rollNo = RegistrationNo.text.toString();
     educationModel.rollNo = rollNo;
+    Random random = Random();
     var url =
         "$baseUrl/addEducationData";
     var endPoint = Uri.parse(url);
@@ -87,6 +90,7 @@ class _Page3State extends State<Page3> {
     var response = http.post(
       endPoint,
       body: {
+        "recordId" : (random.nextInt(100) + 1).toString(),
         "userCnic" : educationModel.userCnic,
         "qualificationLevel" : educationModel.qualificationLevel,
         "education" : educationModel.education,

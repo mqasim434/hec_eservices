@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:hec_eservices/Models/UserModel.dart';
-import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+
+import '../../Models/UserModel.dart';
 import '../../Widgets/bottomNav.dart';
 import '../../Widgets/fab.dart';
 import '../../Widgets/informationCard.dart';
@@ -27,14 +28,14 @@ class _PersonalDetailsState extends State<PersonalDetails> {
   var DOB = TextEditingController();
 
   var genders = [
-    {"Label": "Male", "svg": "assets/male.svg"},
-    {"Label": "Female", "svg": "assets/female.svg"},
-    {"Label": "Other", "svg": "assets/female.svg"},
+    {"Label": "Male", "svg": "assets/icons/male.svg"},
+    {"Label": "Female", "svg": "assets/icons/female.svg"},
+    {"Label": "Other", "svg": "assets/icons/female.svg"},
   ];
 
   var maritalStatus = [
-    {"Label": "Single", "svg": "assets/Single.svg"},
-    {"Label": "Married", "svg": "assets/married.svg"},
+    {"Label": "Single", "svg": "assets/icons/Single.svg"},
+    {"Label": "Married", "svg": "assets/icons/married.svg"},
   ];
 
   Map<String, String> updatedData = {};
@@ -83,62 +84,58 @@ class _PersonalDetailsState extends State<PersonalDetails> {
   @override
   void initState() {
     // TODO: implement initState
+    // Initialize selectedGenderIndex and selectedMaritalIndex based on currentUser data
+    if (currentUser.gender == 'Male') {
+      selectedGenderIndex = 0;
+    } else if (currentUser.gender == 'Female') {
+      selectedGenderIndex = 1;
+    } else if (currentUser.gender == 'Other') {
+      selectedGenderIndex = 2;
+    }
+
+    if (currentUser.maritalStatus == 'Single') {
+      selectedMaritalIndex = 0;
+    } else if (currentUser.maritalStatus == 'Married') {
+      selectedMaritalIndex = 1;
+    }
     getUserData();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    getUserData();
-    if ( currentUser.gender == 'Male') {
-      setState(() {
-        selectedGenderIndex = 0;
-      });
-    } else if ( currentUser.gender == 'Female') {
-      setState(() {
-        selectedGenderIndex = 1;
-      });
-    } else if ( currentUser.gender == 'Other') {
-      setState(() {
-        selectedMaritalIndex = 0;
-      });
-    }
-    if ( currentUser.maritalStatus == 'Single') {
-      setState(() {
-        selectedMaritalIndex = 1;
-      });
-    } else if ( currentUser.maritalStatus == 'Married') {
-      setState(() {
-        selectedGenderIndex = 0;
-      });
-    }
+
     final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
     return Scaffold(
-            appBar: AppBar(
-              iconTheme: const IconThemeData(
-                color: Colors.black, //change your color here
-              ),
-              actions: [
-                if (isEditing)
-                  TextButton(
-                    child: const Text("Save"),
-                    onPressed: () {
-                       updateData();
-                       getUserData();
-                      setState(() {
-                        isEditing = false;
-                      });
-                    },
-                  )
-              ],
-              elevation: 0,
-              backgroundColor: Colors.blueGrey[50],
-              title: const Text(
-                "Personal Details",
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
-            body: isLoading?Center(child: CircularProgressIndicator(),): Scaffold(
+      appBar: AppBar(
+        iconTheme: const IconThemeData(
+          color: Colors.black, //change your color here
+        ),
+        actions: [
+          if (isEditing)
+            TextButton(
+              child: const Text("Save"),
+              onPressed: () {
+                updateData();
+                getUserData();
+                setState(() {
+                  isEditing = false;
+                });
+              },
+            )
+        ],
+        elevation: 0,
+        backgroundColor: Colors.blueGrey[50],
+        title: const Text(
+          "Personal Details",
+          style: TextStyle(color: Colors.black),
+        ),
+      ),
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : Scaffold(
               floatingActionButton: showFab ? const AssistFAB() : null,
               body: Container(
                 padding: const EdgeInsets.all(10),
@@ -151,22 +148,20 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                           InformationCard(
                               showButton: true,
                               onPressed: () {
-                                setState(
-                                  () {
-                                    isEditing = true;
-                                  },
-                                );
+                                setState(() {
+                                  isEditing = true;
+                                });
                               },
                               data: {
-                                "First Name":  currentUser.firstName.toString(),
-                                "Last Name":  currentUser.lastName.toString(),
+                                "First Name": currentUser.firstName.toString(),
+                                "Last Name": currentUser.lastName.toString(),
                                 "Father's Name":
-                                 currentUser.fatherName.toString(),
-                                "Gender":  currentUser.gender.toString(),
+                                    currentUser.fatherName.toString(),
+                                "Gender": currentUser.gender.toString(),
                                 "Marital Status":
-                                 currentUser.maritalStatus.toString(),
+                                    currentUser.maritalStatus.toString(),
                                 "Date of Birth":
-                                 currentUser.dateOfBirth.toString(),
+                                    currentUser.dateOfBirth.toString(),
                               },
                               title: "Personal Details",
                             )
@@ -222,9 +217,11 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                                             updatedData['firstName'] = value;
                                           },
                                           decoration: InputDecoration(
-                                              labelText:  currentUser.firstName != 'null'
-                                                  ?  currentUser.firstName
-                                                  : "First Name",
+                                              labelText:
+                                                  currentUser.firstName !=
+                                                          'null'
+                                                      ? currentUser.firstName
+                                                      : "First Name",
                                               contentPadding:
                                                   EdgeInsets.all(15),
                                               border: OutlineInputBorder()),
@@ -241,9 +238,10 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                                       updatedData['lastName'] = value;
                                     },
                                     decoration: InputDecoration(
-                                        labelText:  currentUser.lastName != 'null'
-                                            ?  currentUser.lastName
-                                            : "Last Name",
+                                        labelText:
+                                            currentUser.lastName != 'null'
+                                                ? currentUser.lastName
+                                                : "Last Name",
                                         contentPadding: EdgeInsets.all(15),
                                         border: OutlineInputBorder()),
                                   ),
@@ -272,21 +270,17 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                                           ? true
                                           : false,
                                       onSelected: (value) {
-                                        setState(
-                                          () {
-                                            print("index:$index");
-                                            selectedGenderIndex = index;
-                                            if (selectedGenderIndex == 0) {
-                                              updatedData['gender'] = 'Male';
-                                            } else if (selectedGenderIndex ==
-                                                1) {
-                                              updatedData['gender'] = 'Female';
-                                            } else if (selectedGenderIndex ==
-                                                2) {
-                                              updatedData['gender'] = 'Other';
-                                            }
-                                          },
-                                        );
+                                        setState(() {
+                                          print("index:$index");
+                                          selectedGenderIndex = index;
+                                          if (index == 0) {
+                                            updatedData['gender'] = 'Male';
+                                          } else if (index == 1) {
+                                            updatedData['gender'] = 'Female';
+                                          } else if (index == 2) {
+                                            updatedData['gender'] = 'Other';
+                                          }
+                                        });
                                       },
                                     );
                                   }),
@@ -344,7 +338,6 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                                                   DateTime.now().year - 100),
                                               lastDate: DateTime.now())
                                           .then((value) {
-
                                         setState(() {
                                           DOB.text = DateFormat("dd, MMMM yyyy")
                                               .format(value!);
@@ -355,27 +348,27 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                                     },
                                     decoration: InputDecoration(
                                         labelText:
-                                         currentUser.dateOfBirth != 'null'
-                                                ?  currentUser.dateOfBirth
+                                            currentUser.dateOfBirth != 'null'
+                                                ? currentUser.dateOfBirth
                                                 : "Date of Birth",
-                                        contentPadding: const EdgeInsets.all(15),
-                                        border: const OutlineInputBorder()),
+                                        contentPadding: EdgeInsets.all(15),
+                                        border: OutlineInputBorder()),
                                   ),
                                 ),
                                 // FATHER NAME FIELD
                                 Container(
-                                  margin: const EdgeInsets.only(top: 10),
+                                  margin: EdgeInsets.only(top: 10),
                                   child: TextFormField(
                                     onChanged: (value) {
                                       updatedData['fatherName'] = value;
                                     },
                                     decoration: InputDecoration(
                                         labelText:
-                                         currentUser.fatherName != 'null'
-                                                ?  currentUser.fatherName
+                                            currentUser.fatherName != 'null'
+                                                ? currentUser.fatherName
                                                 : "Father Name",
-                                        contentPadding: const EdgeInsets.all(15),
-                                        border: const OutlineInputBorder()),
+                                        contentPadding: EdgeInsets.all(15),
+                                        border: OutlineInputBorder()),
                                   ),
                                 ),
                               ],
@@ -389,8 +382,8 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                         type: InformationCardType.Row,
                         onPressed: () {},
                         data: {
-                          "Country":  currentUser.country.toString(),
-                          "CNIC":  currentUser.cnic.toString(),
+                          "Country": currentUser.country.toString(),
+                          "CNIC": currentUser.cnic.toString(),
                         },
                         title: "National ID Information",
                       ),
@@ -399,21 +392,21 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                 ),
               ),
             ),
-            floatingActionButtonLocation: const FixedCenterDockedFabLocation(),
-            floatingActionButton: showFab ? const CenterDockedFAB() : null,
-            extendBody: true,
-            bottomNavigationBar: MyBottomNav(
-                initialSelectedIndex: 1,
-                onSeleted: (index) {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) {
-                    return index == 0
-                        ? MyHomePage()
-                        : index == 2
-                            ? const NotificationPage()
-                            : MyHomePage();
-                  }));
-                }),
-          );
+      floatingActionButtonLocation: const FixedCenterDockedFabLocation(),
+      floatingActionButton: showFab ? const CenterDockedFAB() : null,
+      extendBody: true,
+      bottomNavigationBar: MyBottomNav(
+          initialSelectedIndex: 1,
+          onSeleted: (index) {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) {
+              return index == 0
+                  ? MyHomePage()
+                  : index == 2
+                      ? const NotificationPage()
+                      : MyHomePage();
+            }));
+          }),
+    );
   }
 }

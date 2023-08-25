@@ -118,15 +118,7 @@ class _PerspectiveCropState extends State<PerspectiveCrop> {
               Align(
                 child: InkWell(
                     onTap: () async {
-                      // var template =
-                      // Provider.of<MyTemplate>(context, listen: false);
-
                       if (newFile != null) {
-                        // template.SimpleImage = await newFile!.readAsBytes();
-                        // Navigator.push(context,
-                        // MaterialPageRoute(builder: (conetext) {
-                        //   return CreateOrVerify();
-                        // }));
                         try {
                           FirebaseStorage storage = FirebaseStorage.instance;
                           String imagePath =

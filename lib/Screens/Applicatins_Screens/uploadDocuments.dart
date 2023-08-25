@@ -1,7 +1,9 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:document_scanner_flutter/configs/configs.dart';
 import 'package:document_scanner_flutter/document_scanner_flutter.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
@@ -10,6 +12,7 @@ import 'package:hec_eservices/Screens/Applicatins_Screens/questionaire.dart';
 import 'package:hec_eservices/Screens/Applicatins_Screens/verifyDetails.dart';
 import 'package:hec_eservices/test_Screen/ImageGallery.dart';
 
+import '../../Models/UserModel.dart';
 import '../../Widgets/bottomNav.dart';
 import '../../Widgets/bottomSheet.dart';
 import '../../Widgets/fab.dart';
@@ -58,20 +61,41 @@ class _UploadDocsState extends State<UploadDocs> {
 
   @override
   Widget build(BuildContext context) {
-    void getImage(var value) async {
-      var newFile;
+    var imagePath;
+    var downloadUrl;
+
+    void uploadDocument(String imageTitle)async{
+      try {
+        FirebaseStorage storage = FirebaseStorage.instance;
+        String imageReference =
+            '${UserModel.CurrentUserCnic}/documents/$imageTitle.jpg';
+        Reference ref = storage.ref().child(imageReference);
+        UploadTask uploadTask =
+        ref.putFile(File(imagePath));
+        await uploadTask.whenComplete(() async {
+          print('Image uploaded successfully');
+          // Get the download URL
+          downloadUrl = await ref.getDownloadURL();
+          setState(() {});
+        });
+      } catch (e) {
+        print('Error uploading image: $e');
+      }
+    }
+    void getImage(var value,String imageTitle) async {
       if (value == 0) {
         try {
-          newFile = await DocumentScannerFlutter.launch(context,
+          imagePath = await DocumentScannerFlutter.launch(context,
               source: ScannerFileSource.GALLERY);
-          // Or ScannerFileSource.GALLERY
-          // `scannedDoc` will be the image file scanned from scanner
+          uploadDocument(imageTitle);
+          setState(() {
+
+          });
         } on PlatformException {
-          // 'Failed to get document path or operation cancelled!';
         }
         setState(() {});
       } else if (value == 1) {
-        var imagePath = Navigator.push(
+        downloadUrl = Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => ImageGallery(),
@@ -79,8 +103,9 @@ class _UploadDocsState extends State<UploadDocs> {
         ).then((value) => Navigator.pop(context));
       } else if (value == 2) {
         try {
-          newFile = await DocumentScannerFlutter.launch(context,
+          imagePath = await DocumentScannerFlutter.launch(context,
               source: ScannerFileSource.CAMERA);
+          uploadDocument(imageTitle);
           Navigator.pop(context);
           // Or ScannerFileSource.GALLERY
           // `scannedDoc` will be the image file scanned from scanner
@@ -92,7 +117,7 @@ class _UploadDocsState extends State<UploadDocs> {
       }
     }
 
-    void showImageSelectorBottomSheet(BuildContext context) async {
+    void showImageSelectorBottomSheet(BuildContext context, String imageTitle) async {
       int selectedIndex = 0;
       await showModalBottomSheet(
         context: context,
@@ -132,7 +157,7 @@ class _UploadDocsState extends State<UploadDocs> {
                             ListTile(
                               onTap: () {
                                 selectedIndex = 0;
-                                getImage(selectedIndex);
+                                getImage(selectedIndex,imageTitle);
                               },
                               title: const Text("Upload From Gallery"),
                               leading: const Icon(Icons.image),
@@ -140,7 +165,7 @@ class _UploadDocsState extends State<UploadDocs> {
                             ListTile(
                               onTap: () {
                                 selectedIndex = 1;
-                                getImage(selectedIndex);
+                                getImage(selectedIndex,imageTitle);
                               },
                               title: const Text("Load From Libary"),
                               leading: const Icon(Icons.file_copy),
@@ -148,7 +173,7 @@ class _UploadDocsState extends State<UploadDocs> {
                             ListTile(
                               onTap: () {
                                 selectedIndex = 2;
-                                getImage(selectedIndex);
+                                getImage(selectedIndex,imageTitle);
                               },
                               title: const Text("Use Camera"),
                               leading: const Icon(Icons.camera),
@@ -234,13 +259,13 @@ class _UploadDocsState extends State<UploadDocs> {
               UploadDocTile(
                 Title: "Copy Of CNIC FRONT",
                 onPressed: () {
-                  showImageSelectorBottomSheet(context);
+                  showImageSelectorBottomSheet(context,'cnic_front');
                 },
               ),
               UploadDocTile(
                 Title: "Copy Of CNIC BACK",
                 onPressed: () {
-                  showImageSelectorBottomSheet(context);
+                  showImageSelectorBottomSheet(context,'cnic_back');
                 },
               ),
               Container(
@@ -261,92 +286,92 @@ class _UploadDocsState extends State<UploadDocs> {
                 Title:
                     "Bachelor (16 Years) Degree BS in Software Engineering - Copy of Degree",
                 onPressed: () {
-                  showImageSelectorBottomSheet(context);
+                  showImageSelectorBottomSheet(context, 'degree_copy');
                 },
               ),
               UploadDocTile(
                 Title:
                     "Bachelor (16 Years) Degree BS in Software Engineering - Copy of Transcript",
                 onPressed: () {
-                  showImageSelectorBottomSheet(context);
+                  showImageSelectorBottomSheet(context,'transcript_copy');
                 },
               ),
               UploadDocTile(
                 Title:
                     "Bachelor (16 Years) Degree - BS in Software Engineering - Copy of Provisional Certificate",
                 onPressed: () {
-                  showImageSelectorBottomSheet(context);
+                  showImageSelectorBottomSheet(context,'provisional_certificate_copy');
                 },
               ),
               UploadDocTile(
                 Title:
                     "Bachelor (16 Years) Degree - BS in Software Engineering - Copy of Equivalence Certificate",
                 onPressed: () {
-                  showImageSelectorBottomSheet(context);
+                  showImageSelectorBottomSheet(context,'equivalence_certificate_copy');
                 },
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 10),
-                child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Other Document",
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: Colors.black),
-                    )),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 7,
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 10),
-                      child: TextFormField(
-                        controller: others,
-                        // ignore: prefer_const_constructors
-                        onTap: () {
-                          MyBottomSheet()
-                              .showSearchableBottomSheet(
-                                  context, otherDocuments, "Other Documents")
-                              .then((value) {
-                            setState(() {
-                              others.text = otherDocuments[value];
-                            });
-                          });
-                        },
-                        readOnly: true,
-                        decoration: const InputDecoration(
-                            suffixIcon: Icon(Icons.arrow_drop_down_sharp),
-                            labelText: "Other Documents",
-                            contentPadding: EdgeInsets.all(15),
-                            border: OutlineInputBorder()),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: GestureDetector(
-                      onTap: () {
-                        showImageSelectorBottomSheet(context);
-                      },
-                      child: const Column(
-                        children: [
-                          Icon(
-                            Icons.file_upload,
-                            color: MyColors.blueColor,
-                          ),
-                          Text("Upload")
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
+              // Container(
+              //   margin: const EdgeInsets.only(top: 10),
+              //   child: Align(
+              //       alignment: Alignment.centerLeft,
+              //       child: Text(
+              //         "Other Document",
+              //         style: Theme.of(context)
+              //             .textTheme
+              //             .headline6!
+              //             .copyWith(color: Colors.black),
+              //       )),
+              // ),
+              // const SizedBox(
+              //   height: 10,
+              // ),
+              // Row(
+              //   children: [
+              //     Expanded(
+              //       flex: 7,
+              //       child: Container(
+              //         margin: const EdgeInsets.only(top: 10),
+              //         child: TextFormField(
+              //           controller: others,
+              //           // ignore: prefer_const_constructors
+              //           onTap: () {
+              //             MyBottomSheet()
+              //                 .showSearchableBottomSheet(
+              //                     context, otherDocuments, "Other Documents")
+              //                 .then((value) {
+              //               setState(() {
+              //                 others.text = otherDocuments[value];
+              //               });
+              //             });
+              //           },
+              //           readOnly: true,
+              //           decoration: const InputDecoration(
+              //               suffixIcon: Icon(Icons.arrow_drop_down_sharp),
+              //               labelText: "Other Documents",
+              //               contentPadding: EdgeInsets.all(15),
+              //               border: OutlineInputBorder()),
+              //         ),
+              //       ),
+              //     ),
+              //     Expanded(
+              //       flex: 3,
+              //       child: GestureDetector(
+              //         onTap: () {
+              //           showImageSelectorBottomSheet(context);
+              //         },
+              //         child: const Column(
+              //           children: [
+              //             Icon(
+              //               Icons.file_upload,
+              //               color: MyColors.blueColor,
+              //             ),
+              //             Text("Upload")
+              //           ],
+              //         ),
+              //       ),
+              //     )
+              //   ],
+              // ),
               Align(
                 child: InkWell(
                     onTap: () {

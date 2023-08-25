@@ -5,6 +5,7 @@ import 'package:hec_eservices/Screens/More_Screens/Settings_Screens/changePasswo
 import 'package:hec_eservices/Screens/morePage.dart';
 import 'package:hec_eservices/Screens/notificationPage.dart';
 import 'package:hec_eservices/Screens/profile.dart';
+import 'package:hec_eservices/Screens/signIn.dart';
 import 'package:hec_eservices/Widgets/toffee.dart';
 import 'package:hec_eservices/utils/MyColors.dart';
 
@@ -77,8 +78,12 @@ class _SettingsState extends State<Settings> {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.popUntil(
-                                        context, ModalRoute.withName('/home'));
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                        builder: (context) => SignIn(),
+                                      ),
+                                          (route) => false, // This line clears the stack
+                                    );
                                   },
                                   child: Text("Ok"),
                                 ),

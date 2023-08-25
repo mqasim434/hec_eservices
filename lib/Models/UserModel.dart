@@ -104,6 +104,10 @@ class UserModel {
   static String CurrentUserCnic = 'noCnic';
 
 
+  static List<Map<dynamic,dynamic>> degrees = [];
+
+  static Map<String,dynamic> applicationData = {};
+
 }
 
 
