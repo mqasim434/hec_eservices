@@ -1,0 +1,94 @@
+{
+  "UOG": {
+  "University_Name" : "University of Gujrat, Gujrat",
+    "Degree_Template":"uog_degree",
+    "Transcript_Template":"uog_trans",
+    "Provisional_Template":"uog_prov",
+    "Equivalence_Template":"uog_equiv"
+  },
+  "AIOU": {
+  "University_Name" : "Allama Iqbal Open University, Islamabad",
+    "Degree_Template":"aiou_degree",
+    "Transcript_Template":"aiou_trans",
+    "Provisional_Template":"aiou_prov",
+    "Equivalence_Template":"aiou_equiv"
+  },
+  "BKU": {
+  "University_Name" : "Bacha Khan University, Charsadda",
+    "Degree_Template":"bku_degree",
+    "Transcript_Template":"bku_trans",
+    "Provisional_Template":"bku_prov",
+    "Equivalence_Template":"bku_equiv"
+  },
+  "CUI": {
+    "University_Name" : "COMSATS University, Islamabad",
+    "Degree_Template":"cui_degree",
+    "Transcript_Template":"cui_trans",
+    "Provisional_Template":"cui_prov",
+    "Equivalence_Template":"cui_equiv"
+  },
+  "DUK": {
+  "University_Name" : "Darul Uloom, Karachi",
+    "Degree_Template":"duk_degree",
+    "Transcript_Template":"duk_trans",
+    "Provisional_Template":"duk_prov",
+    "Equivalence_Template":"duk_equiv"
+  },
+  "FJMU": {
+  "University_Name" : "Fatima Jinnah Medical University, Lahore",
+    "Degree_Template":"fjmu_degree",
+    "Transcript_Template":"fjmu_trans",
+    "Provisional_Template":"fjmu_prov",
+    "Equivalence_Template":"fjmu_equiv"
+  },
+  "HUK": {
+  "University_Name" : "Hamdard University, Karachi",
+    "Degree_Template":"huk_degree",
+    "Transcript_Template":"huk_trans",
+    "Provisional_Template":"huk_prov",
+    "Equivalence_Template":"huk_equiv"
+  },
+  "IUB": {
+  "University_Name" : "Islamia University, Bahawalpur",
+    "Degree_Template":"iub_degree",
+    "Transcript_Template":"iub_trans",
+    "Provisional_Template":"iub_prov",
+    "Equivalence_Template":"iub_equiv"
+  },
+  "KEMU": {
+  "University_Name" : "King Edward Medical University, Lahore",
+    "Degree_Template":"kemu_degree",
+    "Transcript_Template":"kemu_trans",
+    "Provisional_Template":"kemu_prov",
+    "Equivalence_Template":"kemu_equiv"
+  },
+  "NCA": {
+  "University_Name" : "National College of Arts, Lahore",
+    "Degree_Template":"nca_degree",
+    "Transcript_Template":"nca_trans",
+    "Provisional_Template":"nca_prov",
+    "Equivalence_Template":"nca_equiv"
+  },
+  "UOJ": {
+  "University_Name" : "University of Jhang",
+    "Degree_Template":"uoj_degree",
+    "Transcript_Template":"uoj_trans",
+    "Provisional_Template":"uoj_prov",
+    "Equivalence_Template":"uoj_equiv"
+  },
+  "UOW": {
+  "University_Name": "University of Wah, Wah",
+    "Degree_Template":"uow_degree",
+    "Transcript_Template":"uow_trans",
+    "Provisional_Template":"uow_prov",
+    "Equivalence_Template":"uow_equiv"
+  },
+  "WUM": {
+  "University_Name" : "Women University, Mardan",
+    "Degree_Template":"wum_degree",
+    "Transcript_Template":"wum_trans",
+    "Provisional_Template":"wum_prov",
+    "Equivalence_Template":"wum_equiv"
+  }
+  
+}

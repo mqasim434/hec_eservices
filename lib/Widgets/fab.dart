@@ -5,13 +5,10 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:fluttericon/linearicons_free_icons.dart';
-import 'package:hec_eservices/Image_Crop/perspectiveCrop.dart';
+import 'package:hec_eservices/Image_Crop/verifyDegree.dart';
 import 'package:hec_eservices/Screens/Applicatins_Screens/detailsOfDegree.dart';
 
 import 'package:hec_eservices/utils/MyColors.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
 
 class CenterDockedFAB extends StatelessWidget {
   const CenterDockedFAB({super.key});
@@ -29,10 +26,7 @@ class CenterDockedFAB extends StatelessWidget {
           showDialog(
               context: context,
               builder: (context) {
-                return const PerspectiveCrop();
-                // return AlertDialog(
-                //   content: ImageManipulation(),
-                // );
+                return const VerifyDegree();
               });
         },
         tooltip: 'Increment',

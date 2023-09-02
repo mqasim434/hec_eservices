@@ -1,0 +1,62 @@
+{ 
+  "_id": { "$oid": "64e90a30e56306890681f2ec" },
+  "universities": [
+    "Allama Iqbal Open University, Islamabad",
+    "Bacha Khan University, Charsadda",
+    "COMSATS University, Islamabad",
+    "Darul Uloom, Karachi",
+    "Fatima Jinnah Medical University, Lahore",
+    "Hamdard University, Karachi",
+    "Islamia University, Bahawalpur",
+    "Kind Edward Medical University, Lahore",
+    "National College of Arts, Lahore",
+    "University of Gujrat, Gujrat",
+    "University of Jhang",
+    "University of Wah, Wah",
+    "Women University, Mardan"
+  ],
+  "campuses": [
+    "Hafiz Hayat Campus",
+    "Fawara Chowk Campus",
+    "City Campus",
+    "Marghazar Campus"
+  ],
+  "qualificationLevels": [
+    "Bachelor (14 Years) Degree",
+    "Bachelor (15 Years) Degree",
+    "Bachelor (16 Years) Degree",
+    "Master (16 Years) Degree",
+    "Master (17 Years) Degree",
+    "Master/ MS (18 Years) Degree",
+    "M-Phill (18 Years) Degree",
+    "MS Leading to PHD (14 Years) Degree",
+    "PHD"
+  ],
+  "degrees": [
+    "B.Arch",
+    "B.Com",
+    "B.Sc (PASS)",
+    "BA",
+    "BSc",
+    "BS-SE",
+    "Bachelor of Arts",
+    "Bachelor of Commerce",
+    "Bachelor of Science",
+    "Associate Degree in Hotel and Restaurant Management"
+  ],
+  "departments": [
+    "Department of Software Engineering",
+    "Department of Computer Science",
+    "Department of Information Technolony"  
+  ],
+  "sessions": [
+    "Morning",
+    "Evening",
+    "Weekend"
+  ],
+  "degreeTypes": [
+    "regular",
+    "non-regular"  
+  ]
+  
+}

@@ -99,8 +99,8 @@ class _DocumentsDetailsState extends State<DocumentsDetails> {
               Align(
                 child: InkWell(
                     onTap: () {
-                      UserModel.applicationData['originalDocumentFee'] = originalSum;
-                      UserModel.applicationData['photocopyDocumentFee'] = originalSum;
+                      UserModel.applicationData['originalDocumentFee'] = originalSum.toString();
+                      UserModel.applicationData['photocopyDocumentFee'] = originalSum.toString();
                       print('HEELO');
                       Navigator.push(
                         context,

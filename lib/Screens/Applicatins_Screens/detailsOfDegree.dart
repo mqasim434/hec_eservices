@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hec_eservices/Models/ApplicationModel.dart';
 import 'package:hec_eservices/Screens/Profile_Screens/Education_Details/educationPage.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -38,7 +39,9 @@ class _DetailsofDegreeState extends State<DetailsofDegree> {
             return const InstructionDialog();
           });
     });
+    Application.degreeInstitutes.clear();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +133,7 @@ class _DetailsofDegreeState extends State<DetailsofDegree> {
                           discipline: data['department'],
                           session: data['sessionType'],
                           program: data['programTitle'],
-                          university: data['universityName'],
+                          university: data['degreeAwardInstitute'],
                           title: data['qualificationLevel'],
                           onView: () {
                             Navigator.push(
@@ -207,7 +210,7 @@ class _DetailsofDegreeState extends State<DetailsofDegree> {
                           child: Text(
                         "Next",
                         style: TextStyle(color: Colors.white),
-                      )))),
+                      ),),),),
             ),
           ]),
         ),

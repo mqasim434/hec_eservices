@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hec_eservices/Notes/Screens/notes_screen.dart';
 import 'package:hec_eservices/Screens/Applicatins_Screens/applications.dart';
 import 'package:hec_eservices/Screens/Applicatins_Screens/attestationDetails.dart';
 import 'package:hec_eservices/Screens/Applicatins_Screens/detailsOfDegree.dart';
@@ -29,12 +30,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       routes: {
-        '/SignIn' : (context)=> SignIn(),
+        '/SignIn' : (context)=> const SignIn(),
       },
-      home: Scaffold(
+      home: const Scaffold(
         body: Center(
           // child: ContactDetails(),
-          child: SplashScreen(),
+          child: SignIn(),
         ),
       ),
     );

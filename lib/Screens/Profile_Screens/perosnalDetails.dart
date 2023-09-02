@@ -373,6 +373,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                                 ),
                               ],
                             ),
+
                       const SizedBox(
                         height: 10,
                       ),

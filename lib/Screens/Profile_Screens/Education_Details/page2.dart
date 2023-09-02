@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hec_eservices/Models/dropdownsModel.dart';
 
 import '../../../Models/EducationModel.dart';
 import '../../../Widgets/bottomSheet.dart';
@@ -6,87 +7,40 @@ import '../../../utils/MyColors.dart';
 
 class Page2 extends StatefulWidget {
   final Function onPressed;
-  Page2({ Key? key,required this.onPressed }) : super(key: key);
+  Page2({Key? key, required this.onPressed}) : super(key: key);
 
   @override
   _Page2State createState() => _Page2State();
 }
 
 class _Page2State extends State<Page2> {
-  var Countries=["Pakistan","Australia","Turkey","NewZealand"];
-  var QualificationLevels = [
-    "Bachelor (14 Years) Degree",
-    "Bachelor (15 Years) Degree",
-    "Bachelor (16 Years) Degree",
-    "Master (16 Years) Degree",
-    "Master (17 Years) Degree",
-    "Master/ MS (18 Years) Degree",
-    "M-Phill (18 Years) Degree",
-    "MS Leading to PHD (14 Years) Degree",
-    "PGD"
-  ];
-  var Institutes = [
-    "Allama Iqbal Open University, Islamabad",
-    "Bacha Khan University, Charsadda",
-    "COMSATS University, Islamabad",
-    "Darul Uloom, Karachi",
-    "Fatima Jinnah Medical University, Lahore",
-    "Hamdard University, Karachi",
-    "Islamia University, Bahawalpur",
-    "Kind Edward Medical University, Lahore",
-    "National College of Arts, Lahore",
-    "University of Gujrat, Gujrat",
-    "University of Jhang",
-    "University of Wah, Wah"
-        "Women University, Mardan"
-  ];
-  var Degrees = [
-    "B. Arch",
-    "B.Com",
-    "B.Sc (PASS)",
-    "BA","BSc","BSSE","Bachelor of Arts", "Bachelor of Commerce","Bachelor of Science",
-    "Associate Degree in Hotel and Restaurant Managen"
-  ];
-  var Campuses = [
-    "Hafiz Hayat Campus",
-    "Fawara Chowk Campus",
-    "City Campus",
-    "Marghazar Campus",
+  var Countries = ["Pakistan", "Australia", "Turkey", "NewZealand"];
+  var QualificationLevels = DropdownDataSingleton.instance.qualificationLevels;
+  var Institutes = DropdownDataSingleton.instance.universities;
+  var Degrees = DropdownDataSingleton.instance.degrees;
+  var Campuses = DropdownDataSingleton.instance.campuses;
+  var Departments = DropdownDataSingleton.instance.departments;
+  var DegreeTypes = DropdownDataSingleton.instance.degreeTypes;
+  var Sessions = DropdownDataSingleton.instance.sessions;
 
-  ];
-  var Departments = [
-    "Department of Software Engineering",
-    "Department of Computer Science",
-    "Department of Information Technolony",
-  ];
-  var DegreeTypes = [
-    "Regular",
-  ];
-  var Sessions = [
-    "Morning",
-    "Evening",
-    "Weekend",
-  ];
-  var Country=TextEditingController();
-  var QualificationLevel=TextEditingController();
-  var Institute2=TextEditingController();
-  var Institute=TextEditingController();
-  var Degree=TextEditingController();
-  var Campus=TextEditingController();
-  var Department=TextEditingController();
-  var DegreeType=TextEditingController();
-  var Session=TextEditingController();
-  var AreaOfResearch=TextEditingController();
 
+  var Country = TextEditingController();
+  var QualificationLevel = TextEditingController();
+  var Institute2 = TextEditingController();
+  var Institute = TextEditingController();
+  var Degree = TextEditingController();
+  var Campus = TextEditingController();
+  var Department = TextEditingController();
+  var DegreeType = TextEditingController();
+  var Session = TextEditingController();
+  var AreaOfResearch = TextEditingController();
 
   int selectedEducationIndex = 0;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
-
         children: [
-
           // EDUCATION TEXT
           Container(
             margin: const EdgeInsets.only(top: 10),
@@ -108,8 +62,7 @@ class _Page2State extends State<Page2> {
               // ignore: prefer_const_constructors
               onTap: () {
                 MyBottomSheet()
-                    .showSearchableBottomSheet(
-                    context, Countries, "Country")
+                    .showSearchableBottomSheet(context, Countries, "Country")
                     .then((value) {
                   setState(() {
                     Country.text = Countries[value];
@@ -133,7 +86,7 @@ class _Page2State extends State<Page2> {
               onTap: () {
                 MyBottomSheet()
                     .showSearchableBottomSheet(
-                    context, Institutes, "Degree Award Institute")
+                        context, Institutes, "Degree Award Institute")
                     .then((value) {
                   setState(() {
                     Institute2.text = Institutes[value];
@@ -157,7 +110,7 @@ class _Page2State extends State<Page2> {
               onTap: () {
                 MyBottomSheet()
                     .showSearchableBottomSheet(
-                    context, Degrees, "Program Title")
+                        context, Degrees, "Program Title")
                     .then((value) {
                   setState(() {
                     Degree.text = Degrees[value];
@@ -181,7 +134,7 @@ class _Page2State extends State<Page2> {
               onTap: () {
                 MyBottomSheet()
                     .showSearchableBottomSheet(
-                    context, Institutes, "University Name on Degree")
+                        context, Institutes, "University Name on Degree")
                     .then((value) {
                   setState(() {
                     Institute2.text = Institutes[value];
@@ -204,8 +157,7 @@ class _Page2State extends State<Page2> {
               // ignore: prefer_const_constructors
               onTap: () {
                 MyBottomSheet()
-                    .showSearchableBottomSheet(
-                    context, Campuses, "Campus")
+                    .showSearchableBottomSheet(context, Campuses, "Campus")
                     .then((value) {
                   setState(() {
                     Campus.text = Campuses[value];
@@ -229,7 +181,7 @@ class _Page2State extends State<Page2> {
               onTap: () {
                 MyBottomSheet()
                     .showSearchableBottomSheet(
-                    context, Departments, "Department")
+                        context, Departments, "Department")
                     .then((value) {
                   setState(() {
                     Department.text = Departments[value];
@@ -253,7 +205,7 @@ class _Page2State extends State<Page2> {
               onTap: () {
                 MyBottomSheet()
                     .showSearchableBottomSheet(
-                    context, DegreeTypes, "Degree Type")
+                        context, DegreeTypes, "Degree Type")
                     .then((value) {
                   setState(() {
                     DegreeType.text = DegreeTypes[value];
@@ -277,7 +229,7 @@ class _Page2State extends State<Page2> {
               onTap: () {
                 MyBottomSheet()
                     .showSearchableBottomSheet(
-                    context, Sessions, "Session Type")
+                        context, Sessions, "Session Type")
                     .then((value) {
                   setState(() {
                     Session.text = Sessions[value];
@@ -296,13 +248,11 @@ class _Page2State extends State<Page2> {
           // Area of Research
           Container(
             margin: const EdgeInsets.only(top: 20),
-
             child: TextFormField(
               controller: AreaOfResearch,
               // ignore: prefer_const_constructors
 
               decoration: const InputDecoration(
-
                   labelText: "Area of Research",
                   contentPadding: EdgeInsets.all(15),
                   border: OutlineInputBorder()),
@@ -310,23 +260,27 @@ class _Page2State extends State<Page2> {
           ),
           Align(
             child: InkWell(
-                onTap: (){
+                onTap: () {
                   addData();
                   widget.onPressed();
-                }, child: Container(
-                width: double.maxFinite,
-                margin: const EdgeInsets.symmetric(vertical: 20),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    gradient: MyColors.gradient3
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                child: const Center(child: Text("Next",style: TextStyle(color: Colors.white),)))),
+                },
+                child: Container(
+                    width: double.maxFinite,
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        gradient: MyColors.gradient3),
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    child: const Center(
+                        child: Text(
+                      "Next",
+                      style: TextStyle(color: Colors.white),
+                    )))),
           ),
-          const SizedBox(height: 70,)
-
+          const SizedBox(
+            height: 70,
+          )
         ],
-
       ),
     );
   }

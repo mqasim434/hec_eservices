@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hec_eservices/Models/TemplateModel.dart';
 import 'package:hec_eservices/Screens/Applicatins_Screens/applications.dart';
 import 'package:hec_eservices/test_Screen/ImageGallery.dart';
 import 'package:hec_eservices/utils/config.dart';
@@ -18,6 +19,10 @@ import 'package:hec_eservices/utils/MyColors.dart';
 import 'package:hec_eservices/Widgets/toffee.dart';
 import 'package:hec_eservices/Widgets/bottomNav.dart';
 import 'package:hec_eservices/Models/UserModel.dart';
+
+import '../Models/ApplicationModel.dart';
+import '../Models/dropdownsModel.dart';
+import '../test_Screen/getTemplates.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key}) : super(key: key);
@@ -56,10 +61,19 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  void getDropdowns() async{
+    await DropdownDataSingleton.fetchData();
+  }
+  Future<void> getApplications() async{
+    await Application.fetchApplications();
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     getUserData();
+    getDropdowns();
+    getApplications();
     super.initState();
   }
 
@@ -182,7 +196,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
                 children: [
                   Toffee(
-                    Number: 0,
+                    Number: Application.applicationCount,
                     Label: "Total Applications",
                     svg: "assets/total.svg",
                     onPressed: () {
@@ -238,7 +252,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ImageGallery(),
+                          builder: (context) => UniversityTemplatesScreen(),
                         ),
                       );
                     },

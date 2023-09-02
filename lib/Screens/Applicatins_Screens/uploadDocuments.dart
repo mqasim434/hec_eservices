@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
@@ -7,12 +8,18 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
+// import 'package:hec_eservices/Image_Crop/placeQR.dart';
+import 'package:hec_eservices/Models/TemplateModel.dart';
 import 'package:hec_eservices/Screens/Applicatins_Screens/detailsOfDegree.dart';
 import 'package:hec_eservices/Screens/Applicatins_Screens/questionaire.dart';
 import 'package:hec_eservices/Screens/Applicatins_Screens/verifyDetails.dart';
-import 'package:hec_eservices/test_Screen/ImageGallery.dart';
+import 'package:hec_eservices/utils/config.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 
+import '../../Image_Crop/placeQR.dart';
 import '../../Models/UserModel.dart';
+import '../../Models/TemplateModel.dart';
 import '../../Widgets/bottomNav.dart';
 import '../../Widgets/bottomSheet.dart';
 import '../../Widgets/fab.dart';
@@ -61,63 +68,68 @@ class _UploadDocsState extends State<UploadDocs> {
 
   @override
   Widget build(BuildContext context) {
-    var imagePath;
     var downloadUrl;
+    final ImagePicker _imagePicker = ImagePicker();
 
-    void uploadDocument(String imageTitle)async{
+    Future<void> uploadDocument(String imageTitle, XFile? scannedDocument) async {
+      final userCnic = UserModel.CurrentUserCnic;
+
+      final databaseRef = imageTitle.contains('cnic')
+          ? '$userCnic/cnic/$imageTitle.jpg'
+          : '$userCnic/documents/$imageTitle.jpg';
+
+      final Reference storageRef = FirebaseStorage.instance.ref(databaseRef);
       try {
-        FirebaseStorage storage = FirebaseStorage.instance;
-        String imageReference =
-            '${UserModel.CurrentUserCnic}/documents/$imageTitle.jpg';
-        Reference ref = storage.ref().child(imageReference);
-        UploadTask uploadTask =
-        ref.putFile(File(imagePath));
-        await uploadTask.whenComplete(() async {
-          print('Image uploaded successfully');
-          // Get the download URL
-          downloadUrl = await ref.getDownloadURL();
-          setState(() {});
+
+        await storageRef.putFile(
+          File(scannedDocument!.path),
+          SettableMetadata(contentType: 'image/jpeg'),
+        );
+
+        final String url = await storageRef.getDownloadURL();
+        setState(() {
+          downloadUrl = url;
+
         });
-      } catch (e) {
-        print('Error uploading image: $e');
+      } catch (error) {
+        print('Error uploading document: $error');
       }
-    }
-    void getImage(var value,String imageTitle) async {
-      if (value == 0) {
-        try {
-          imagePath = await DocumentScannerFlutter.launch(context,
-              source: ScannerFileSource.GALLERY);
-          uploadDocument(imageTitle);
-          setState(() {
-
-          });
-        } on PlatformException {
-        }
-        setState(() {});
-      } else if (value == 1) {
-        downloadUrl = Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ImageGallery(),
-          ),
-        ).then((value) => Navigator.pop(context));
-      } else if (value == 2) {
-        try {
-          imagePath = await DocumentScannerFlutter.launch(context,
-              source: ScannerFileSource.CAMERA);
-          uploadDocument(imageTitle);
-          Navigator.pop(context);
-          // Or ScannerFileSource.GALLERY
-          // `scannedDoc` will be the image file scanned from scanner
-        } on PlatformException {
-          // 'Failed to get document path or operation cancelled!';
-        }
-        setState(() {});
-
+      if(imageTitle=='cnic_front'){
+        UserModel.applicationData['cnicFront'] = downloadUrl;
+      }
+      else if(imageTitle=='cnic_back'){
+        UserModel.applicationData['cnicBack'] = downloadUrl;
       }
     }
 
-    void showImageSelectorBottomSheet(BuildContext context, String imageTitle) async {
+      Future<void> _pickDocument(int pickerIndex,String documentTitle,int index,String templateType) async {
+      if(pickerIndex==0){
+        final XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery);
+        if (image != null) {
+          if(!(documentTitle.contains('cnic'))){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>PlaceQR(
+              imageFile: File(image.path.toString()),
+              upload:uploadDocument(documentTitle, image),
+              index: index,
+              templateType: templateType.toString(),
+            )));
+            print("????????????? ${templateType.toString()}");
+          }
+          else{
+            await uploadDocument(documentTitle, image);
+          }
+        }
+      }
+      else{
+        final XFile? image = await _imagePicker.pickImage(source: ImageSource.camera);
+        if (image != null) {
+          await uploadDocument(documentTitle, image);
+        }
+      }
+    }
+
+    void showImageSelectorBottomSheet(
+        BuildContext context, String imageTitle,int index,String templateType) async {
       int selectedIndex = 0;
       await showModalBottomSheet(
         context: context,
@@ -157,7 +169,7 @@ class _UploadDocsState extends State<UploadDocs> {
                             ListTile(
                               onTap: () {
                                 selectedIndex = 0;
-                                getImage(selectedIndex,imageTitle);
+                                _pickDocument(selectedIndex, imageTitle,index,templateType);
                               },
                               title: const Text("Upload From Gallery"),
                               leading: const Icon(Icons.image),
@@ -165,7 +177,7 @@ class _UploadDocsState extends State<UploadDocs> {
                             ListTile(
                               onTap: () {
                                 selectedIndex = 1;
-                                getImage(selectedIndex,imageTitle);
+                                _pickDocument(selectedIndex, imageTitle,index,templateType);
                               },
                               title: const Text("Load From Libary"),
                               leading: const Icon(Icons.file_copy),
@@ -173,7 +185,7 @@ class _UploadDocsState extends State<UploadDocs> {
                             ListTile(
                               onTap: () {
                                 selectedIndex = 2;
-                                getImage(selectedIndex,imageTitle);
+                                _pickDocument(selectedIndex, imageTitle,index,templateType);
                               },
                               title: const Text("Use Camera"),
                               leading: const Icon(Icons.camera),
@@ -188,6 +200,11 @@ class _UploadDocsState extends State<UploadDocs> {
         ),
       );
     }
+
+
+
+
+
 
     return Scaffold(
       body: Scaffold(
@@ -259,13 +276,13 @@ class _UploadDocsState extends State<UploadDocs> {
               UploadDocTile(
                 Title: "Copy Of CNIC FRONT",
                 onPressed: () {
-                  showImageSelectorBottomSheet(context,'cnic_front');
+                  showImageSelectorBottomSheet(context, 'cnic_front',-1,'none');
                 },
               ),
               UploadDocTile(
                 Title: "Copy Of CNIC BACK",
                 onPressed: () {
-                  showImageSelectorBottomSheet(context,'cnic_back');
+                  showImageSelectorBottomSheet(context, 'cnic_back',-1,'none');
                 },
               ),
               Container(
@@ -273,7 +290,7 @@ class _UploadDocsState extends State<UploadDocs> {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Education Document",
+                    "Education Documents",
                     style: Theme.of(context)
                         .textTheme
                         .headline6!
@@ -281,100 +298,49 @@ class _UploadDocsState extends State<UploadDocs> {
                   ),
                 ),
               ),
-              UploadDocTile(
-                NoOfDocs: 2,
-                Title:
-                    "Bachelor (16 Years) Degree BS in Software Engineering - Copy of Degree",
-                onPressed: () {
-                  showImageSelectorBottomSheet(context, 'degree_copy');
-                },
+
+              Container(
+                margin: EdgeInsets.only(top: 10),
+                height: UserModel.degrees.length * 300,
+                child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: UserModel.degrees.length,
+                    itemBuilder: (context, index) {
+                      final data = UserModel.degrees[index];
+                      return Column(
+                        children: [
+                          UploadDocTile(
+                              Title:
+                              '${data['qualificationLevel']} - Degree',
+                              onPressed: () {
+                                showImageSelectorBottomSheet(context, 'degree',index,'Degree_Template');
+                              }),
+                          UploadDocTile(
+                              Title:
+                              '${data['qualificationLevel']} - Transcript',
+                              onPressed: () {
+                                showImageSelectorBottomSheet(context, 'transcript',index,'Transcript_Template');
+                              }),
+                          UploadDocTile(
+                              Title:
+                              '${data['qualificationLevel']} - Provisional Certificate',
+                              onPressed: () {
+                                showImageSelectorBottomSheet(context, 'provisional_certificate',index,'Provisional_Template');
+                              }),
+                          UploadDocTile(
+                              Title:
+                              '${data['qualificationLevel']} - Equivalence Certificate',
+                              onPressed: () {
+                                showImageSelectorBottomSheet(context, 'equivalence_certificate',index,'Equivalence_Template');
+                              }),
+                        ],
+                      );
+                    }),
               ),
-              UploadDocTile(
-                Title:
-                    "Bachelor (16 Years) Degree BS in Software Engineering - Copy of Transcript",
-                onPressed: () {
-                  showImageSelectorBottomSheet(context,'transcript_copy');
-                },
-              ),
-              UploadDocTile(
-                Title:
-                    "Bachelor (16 Years) Degree - BS in Software Engineering - Copy of Provisional Certificate",
-                onPressed: () {
-                  showImageSelectorBottomSheet(context,'provisional_certificate_copy');
-                },
-              ),
-              UploadDocTile(
-                Title:
-                    "Bachelor (16 Years) Degree - BS in Software Engineering - Copy of Equivalence Certificate",
-                onPressed: () {
-                  showImageSelectorBottomSheet(context,'equivalence_certificate_copy');
-                },
-              ),
-              // Container(
-              //   margin: const EdgeInsets.only(top: 10),
-              //   child: Align(
-              //       alignment: Alignment.centerLeft,
-              //       child: Text(
-              //         "Other Document",
-              //         style: Theme.of(context)
-              //             .textTheme
-              //             .headline6!
-              //             .copyWith(color: Colors.black),
-              //       )),
-              // ),
-              // const SizedBox(
-              //   height: 10,
-              // ),
-              // Row(
-              //   children: [
-              //     Expanded(
-              //       flex: 7,
-              //       child: Container(
-              //         margin: const EdgeInsets.only(top: 10),
-              //         child: TextFormField(
-              //           controller: others,
-              //           // ignore: prefer_const_constructors
-              //           onTap: () {
-              //             MyBottomSheet()
-              //                 .showSearchableBottomSheet(
-              //                     context, otherDocuments, "Other Documents")
-              //                 .then((value) {
-              //               setState(() {
-              //                 others.text = otherDocuments[value];
-              //               });
-              //             });
-              //           },
-              //           readOnly: true,
-              //           decoration: const InputDecoration(
-              //               suffixIcon: Icon(Icons.arrow_drop_down_sharp),
-              //               labelText: "Other Documents",
-              //               contentPadding: EdgeInsets.all(15),
-              //               border: OutlineInputBorder()),
-              //         ),
-              //       ),
-              //     ),
-              //     Expanded(
-              //       flex: 3,
-              //       child: GestureDetector(
-              //         onTap: () {
-              //           showImageSelectorBottomSheet(context);
-              //         },
-              //         child: const Column(
-              //           children: [
-              //             Icon(
-              //               Icons.file_upload,
-              //               color: MyColors.blueColor,
-              //             ),
-              //             Text("Upload")
-              //           ],
-              //         ),
-              //       ),
-              //     )
-              //   ],
-              // ),
               Align(
                 child: InkWell(
                     onTap: () {
+                      print(UserModel.applicationData);
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return const VerifyDetails();

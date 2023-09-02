@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hec_eservices/Models/UserModel.dart';
 import 'package:intl/intl.dart';
 
+import '../../../Models/dropdownsModel.dart';
 import '../../../Widgets/bottomSheet.dart';
 import '../../../Widgets/rectangleToggle.dart';
 import '../../../utils/MyColors.dart';
@@ -24,17 +25,7 @@ class _Page1State extends State<Page1> {
   var DateStart = TextEditingController();
   var ExactName = TextEditingController();
   var DateEnd = TextEditingController();
-  var QualificationLevels = [
-    "Bachelor (14 Years) Degree",
-    "Bachelor (15 Years) Degree",
-    "Bachelor (16 Years) Degree",
-    "Master (16 Years) Degree",
-    "Master (17 Years) Degree",
-    "Master/ MS (18 Years) Degree",
-    "M-Phill (18 Years) Degree",
-    "MS Leading to PHD (14 Years) Degree",
-    "PGD"
-  ];
+  var QualificationLevels = DropdownDataSingleton.instance.qualificationLevels;
   var EducationStatus = ["Complete", "Incomplete"];
   int selectedEducationIndex = 0;
   @override

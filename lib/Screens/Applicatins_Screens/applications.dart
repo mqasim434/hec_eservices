@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 
-
+import '../../Models/ApplicationModel.dart';
 import '../../Widgets/bottomNav.dart';
 import '../../Widgets/fab.dart';
 import '../homepage.dart';
@@ -17,6 +17,9 @@ class MyApplications extends StatefulWidget {
 }
 
 class _MyApplicationsState extends State<MyApplications> {
+
+
+
   @override
   Widget build(BuildContext context) {
     final bool showFab = MediaQuery.of(context).viewInsets.bottom==0.0;
@@ -62,9 +65,9 @@ class _MyApplicationsState extends State<MyApplications> {
                       Status: "Saved",
                       date: DateTime.now(),
                       Service: "Degree Attestation Service",
-                      ApplicationID: "1711218",
+                      ApplicationID: '00000${index+1}',
                     );
-                  },childCount: 20
+                  },childCount: Application.applicationCount
                   ))
             ],
 

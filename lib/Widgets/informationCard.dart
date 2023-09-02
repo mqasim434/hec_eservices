@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hec_eservices/Models/UserModel.dart';
 import 'package:hec_eservices/utils/MyColors.dart';
+import '../Models/ApplicationModel.dart';
 import '../utils/MyColors.dart';
 
 enum InformationCardType { ExpandedTwoColumn, Row, ValuesOnly }
@@ -160,11 +161,11 @@ class _DegreeInformationCardState extends State<DegreeInformationCard> {
     return Container(
         margin: const EdgeInsets.only(bottom: 10),
         width: double.infinity,
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 10),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                   color: Colors.black12, blurRadius: 5, offset: Offset(0, 3))
             ]),
@@ -218,7 +219,8 @@ class _DegreeInformationCardState extends State<DegreeInformationCard> {
                                     'oSum' : 0,
                                     'cSum' : 0,
                                   });
-                                  print(UserModel.degrees);
+                                  Application.degreeInstitutes.add(widget.university.toString());
+                                  print(Application.degreeInstitutes);
                                 }
                                 DegreeInformationCard.selected=value!;
                               });

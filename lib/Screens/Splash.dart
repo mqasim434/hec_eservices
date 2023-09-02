@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hec_eservices/Screens/introScreen.dart';
-import 'package:hec_eservices/Screens/signIn.dart';
+import 'package:hec_eservices/Models/dropdownsModel.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);

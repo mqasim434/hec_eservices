@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
+import 'package:hec_eservices/Models/ApplicationModel.dart';
 import 'package:hec_eservices/Models/UserModel.dart';
 import 'package:hec_eservices/Screens/Applicatins_Screens/detailsOfDegree.dart';
 import 'package:hec_eservices/Screens/More_Screens/Settings_Screens/accountSettings.dart';
@@ -46,6 +47,16 @@ class _VerifyDetailsState extends State<VerifyDetails> {
       }
     } catch (e) {
       print(e);
+    }
+  }
+  
+  void uploadData() async{
+    UserModel.applicationData['userCnic'] = UserModel.CurrentUserCnic.toString();
+    var response = await http.post(Uri.parse('$baseUrl/submitApplication'),body: UserModel.applicationData);
+    if (response.statusCode == 200) {
+      print('Application Submitted');
+    } else {
+      print('Error Submitting Application');
     }
   }
 
@@ -247,6 +258,7 @@ class _VerifyDetailsState extends State<VerifyDetails> {
               Align(
                 child: InkWell(
                   onTap: () {
+                    uploadData();
                     showDialog(
                       context: context,
                       builder: (context) => Container(
@@ -285,11 +297,6 @@ class _VerifyDetailsState extends State<VerifyDetails> {
                               ),
                             )
                           ],
-                          // content: SizedBox(
-                          //     width: 250,
-                          //     height: 250,
-                          //     child: Lottie.asset(
-                          //         'assets/animations/submitted.json')),
                         ),
                       ),
                     );
