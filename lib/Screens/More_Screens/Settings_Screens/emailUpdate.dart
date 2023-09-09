@@ -5,10 +5,10 @@ import 'package:hec_eservices/utils/config.dart';
 import '../../../Widgets/bottomNav.dart';
 import '../../../Widgets/fab.dart';
 import '../../../utils/MyColors.dart';
-import '../../homepage.dart';
-import '../../morePage.dart';
-import '../../notificationPage.dart';
-import '../../profile.dart';
+import '../../Navbar_Screens/dashboard.dart';
+import '../../Navbar_Screens/morePage.dart';
+import '../../Navbar_Screens/notificationPage.dart';
+import '../../Navbar_Screens/profile.dart';
 import 'package:http/http.dart' as http;
 
 class EmailUpdate extends StatefulWidget {
@@ -108,9 +108,9 @@ class _EmailUpdateState extends State<EmailUpdate> {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) {
                 return index == 0
-                    ? MyHomePage()
+                    ? Dashboard()
                     : index == 1
-                        ? const ProfilePage()
+                        ? ProfilePage()
                         : const NotificationPage();
               }));
             } else {

@@ -1,15 +1,16 @@
 import 'dart:convert';
 
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hec_eservices/Screens/Register.dart';
-import 'package:hec_eservices/Screens/homepage.dart';
+import 'package:hec_eservices/Screens/Authentication/Register.dart';
+import 'package:hec_eservices/Screens/Navbar_Screens/dashboard.dart';
 import 'package:hec_eservices/utils/MyColors.dart';
 import 'package:flutter/material.dart';
-import 'package:hec_eservices/Screens/forgotPassword.dart';
+import 'package:hec_eservices/Screens/Authentication/Forgot_Password/forgotPassword.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:hec_eservices/utils/config.dart';
 import 'package:http/http.dart' as http;
 import 'package:hec_eservices/Models/UserModel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -25,12 +26,34 @@ class _SignInState extends State<SignIn> {
   TextEditingController _cnicController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
+  String cnic = '';
+  String password = '';
+  String errorMessage = '';
+
   Future<void> loginUser(BuildContext context) async {
-    String cnic = _cnicController.text.toString();
-    String password = _passwordController.text.toString();
+    cnic = _cnicController.text.toString();
+    password = _passwordController.text.toString();
+
+    if(cnic == ''){
+      setState(() {
+        errorMessage = "Enter cnic";
+      });
+      return;
+    }
+    else if(password == ''){
+      setState(() {
+        errorMessage = "Enter password";
+      });
+      return;
+    }
+    // else if(cnic.length<13){
+    //   setState(() {
+    //     errorMessage = "Enter a valid cnic";
+    //   });
+    //   return;
+    // }
 
     var endPoint = "$baseUrl/login";
-    print('login');
     try {
       var response = await http.post(
         Uri.parse(endPoint),
@@ -49,7 +72,7 @@ class _SignInState extends State<SignIn> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MyHomePage(),
+            builder: (context) => Dashboard(),
           ),
         );
       } else {
@@ -65,6 +88,25 @@ class _SignInState extends State<SignIn> {
       // );
       print(error);
     }
+  }
+
+  void getPrefs()async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    cnic = (await prefs.getString('savedCnic')).toString();
+    password = (await prefs.getString('savedPassword')).toString();
+    if(cnic!=null || cnic!='' ) {
+      setState(() {
+        _cnicController.text = cnic;
+        _passwordController.text = password;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // getPrefs();
   }
 
   @override
@@ -117,6 +159,12 @@ class _SignInState extends State<SignIn> {
                           labelText: "CNIC",
                           contentPadding: EdgeInsets.all(15),
                           border: OutlineInputBorder()),
+                      onChanged: (value){
+                        setState(() {
+                          cnic = value;
+                          errorMessage = '';
+                        });
+                      },
                     ),
                   ),
                   const SizedBox(
@@ -145,6 +193,12 @@ class _SignInState extends State<SignIn> {
                           labelText: "Password",
                           contentPadding: const EdgeInsets.all(15),
                           border: const OutlineInputBorder()),
+                      onChanged: (value){
+                        setState(() {
+                          password = value;
+                          errorMessage = '';
+                        });
+                      },
                     ),
                   ),
                   Row(
@@ -171,17 +225,21 @@ class _SignInState extends State<SignIn> {
                                         MaterialTapTargetSize.padded,
                                     activeColor: MyColors.greenColor,
                                     value: rememberMe,
-                                    onChanged: (value) {
+                                    onChanged: (value) async{
                                       setState(() {
                                         rememberMe = value!;
                                       });
+                                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                                      await prefs.setString('savedCnic', cnic);
+                                      await prefs.setString('savedPassword', password);
                                     }),
                               ),
                             ),
-                            const Text("Remember Me")
+                            const Text("Remember Me"),
                           ],
                         ),
                       ),
+
                       TextButton(
                           onPressed: () {
                             Navigator.push(
@@ -199,6 +257,8 @@ class _SignInState extends State<SignIn> {
                   const SizedBox(
                     height: 10,
                   ),
+                  if(errorMessage!='')
+                    Text(errorMessage,style: TextStyle(color: Colors.red),),
                   Align(
                     child: InkWell(
                       onTap: () {

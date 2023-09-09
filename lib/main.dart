@@ -1,20 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hec_eservices/Notes/Screens/notes_screen.dart';
-import 'package:hec_eservices/Screens/Applicatins_Screens/applications.dart';
-import 'package:hec_eservices/Screens/Applicatins_Screens/attestationDetails.dart';
-import 'package:hec_eservices/Screens/Applicatins_Screens/detailsOfDegree.dart';
-import 'package:hec_eservices/Screens/Applicatins_Screens/uploadDocuments.dart';
-import 'package:hec_eservices/Screens/Applicatins_Screens/verifyDetails.dart';
-import 'package:hec_eservices/Screens/homepage.dart';
-import 'package:hec_eservices/Screens/profile.dart';
-import 'package:hec_eservices/test_Screen/getUser.dart';
-import 'package:hec_eservices/test_Screen/test_screen.dart';
-import 'Screens/Applicatins_Screens/questionaire.dart';
 import 'Screens/Splash.dart';
-import 'Screens/Register.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'Screens/signIn.dart';
-import 'Screens/Profile_Screens/contactDetails.dart';
+import 'Screens/Authentication/signIn.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +22,7 @@ class MyApp extends StatelessWidget {
       home: const Scaffold(
         body: Center(
           // child: ContactDetails(),
-          child: SignIn(),
+          child: SplashScreen(),
         ),
       ),
     );

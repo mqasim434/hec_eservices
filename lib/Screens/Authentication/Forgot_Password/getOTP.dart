@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:hec_eservices/Screens/signIn.dart';
+import 'package:hec_eservices/Screens/Authentication/Forgot_Password/newPassword.dart';
+import 'package:hec_eservices/Screens/Authentication/signIn.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 
 class OTPScreen extends StatefulWidget {
+
+  OTPScreen({required this.otp,required this.email});
+  String otp;
+  String email;
+
   @override
   _OTPScreenState createState() => _OTPScreenState();
 }
@@ -24,13 +30,13 @@ class _OTPScreenState extends State<OTPScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
+            const Text(
               'Enter the OTP sent to your phone',
               style: TextStyle(fontSize: 16),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40),
+              padding: const EdgeInsets.symmetric(horizontal: 40),
               child: PinCodeTextField(
                 appContext: context,
                 length: 4, // Length of the PIN or OTP
@@ -41,25 +47,22 @@ class _OTPScreenState extends State<OTPScreen> {
                 },
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Validate the entered OTP, e.g., by sending it to a server
-                // and handling the validation logic.
-                if (enteredOTP == '1234') {
-                  // OTP is correct, navigate to the next screen
+                if (enteredOTP == widget.otp) {
                   Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => SignIn()));
+                      MaterialPageRoute(builder: (context) => NewPasswordScreen(email: widget.email,)));
                 } else {
                   // OTP is incorrect, show an error message
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                       content: Text('Invalid OTP. Please try again.'),
                     ),
                   );
                 }
               },
-              child: Text('Submit'),
+              child: const Text('Submit'),
             ),
           ],
         ),

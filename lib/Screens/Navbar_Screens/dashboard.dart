@@ -2,17 +2,15 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hec_eservices/Models/TemplateModel.dart';
 import 'package:hec_eservices/Screens/Applicatins_Screens/applications.dart';
-import 'package:hec_eservices/test_Screen/ImageGallery.dart';
 import 'package:hec_eservices/utils/config.dart';
 import 'package:get_ip_address/get_ip_address.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:hec_eservices/Screens/morePage.dart';
-import 'package:hec_eservices/Screens/notificationPage.dart';
-import 'package:hec_eservices/Screens/profile.dart';
+import 'package:hec_eservices/Screens/Navbar_Screens/morePage.dart';
+import 'package:hec_eservices/Screens/Navbar_Screens/notificationPage.dart';
+import 'package:hec_eservices/Screens/Navbar_Screens/profile.dart';
 import 'package:hec_eservices/Widgets/bottomSheet.dart';
 import 'package:hec_eservices/Widgets/fab.dart';
 import 'package:hec_eservices/utils/MyColors.dart';
@@ -20,22 +18,21 @@ import 'package:hec_eservices/Widgets/toffee.dart';
 import 'package:hec_eservices/Widgets/bottomNav.dart';
 import 'package:hec_eservices/Models/UserModel.dart';
 
-import '../Models/ApplicationModel.dart';
-import '../Models/dropdownsModel.dart';
-import '../test_Screen/getTemplates.dart';
+import '../../Models/ApplicationModel.dart';
+import '../../Models/dropdownsModel.dart';
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
+class Dashboard extends StatefulWidget {
+  Dashboard({Key? key}) : super(key: key);
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<Dashboard> createState() => _DashboardState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _DashboardState extends State<Dashboard> {
   int selectedIndex = 0;
   bool isLoading = true;
 
   final List<Widget> screens = [
-    const ProfilePage(),
+    ProfilePage(),
     const NotificationPage(),
     const MorePage(),
   ];
@@ -247,17 +244,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ],
                   ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => UniversityTemplatesScreen(),
-                        ),
-                      );
-                    },
-                    child: const Text('Document Gallery'),
-                  ),
                 ],
               ),
             ),
@@ -277,7 +263,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) {
               return index == 1
-                  ? const ProfilePage()
+                  ? ProfilePage()
                   : index == 2
                       ? const NotificationPage()
                       : const MorePage();

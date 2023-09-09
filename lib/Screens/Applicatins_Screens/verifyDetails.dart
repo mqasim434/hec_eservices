@@ -14,9 +14,9 @@ import 'package:lottie/lottie.dart';
 import '../../Widgets/bottomNav.dart';
 import '../../Widgets/fab.dart';
 import '../../utils/MyColors.dart';
-import '../homepage.dart';
-import '../notificationPage.dart';
-import '../profile.dart';
+import '../Navbar_Screens/dashboard.dart';
+import '../Navbar_Screens/notificationPage.dart';
+import '../Navbar_Screens/profile.dart';
 
 class VerifyDetails extends StatefulWidget {
   const VerifyDetails({Key? key}) : super(key: key);
@@ -275,7 +275,7 @@ class _VerifyDetailsState extends State<VerifyDetails> {
                                 onTap: () {
                                   Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute(
-                                      builder: (context) => MyHomePage(),
+                                      builder: (context) => Dashboard(),
                                     ),
                                         (route) => false, // This line clears the stack
                                   );
@@ -331,9 +331,9 @@ class _VerifyDetailsState extends State<VerifyDetails> {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) {
                 return index == 0
-                    ? MyHomePage()
+                    ? Dashboard()
                     : index == 1
-                        ? const ProfilePage()
+                        ? ProfilePage()
                         : const NotificationPage();
               }));
             }

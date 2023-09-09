@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hec_eservices/Screens/homepage.dart';
-import 'package:hec_eservices/Screens/morePage.dart';
-import 'package:hec_eservices/Screens/profile.dart';
+import 'package:hec_eservices/Screens/Navbar_Screens/dashboard.dart';
+import 'package:hec_eservices/Screens/Navbar_Screens/morePage.dart';
+import 'package:hec_eservices/Screens/Navbar_Screens/profile.dart';
 import 'package:hec_eservices/Widgets/bottomNav.dart';
 import 'package:hec_eservices/Widgets/toffee.dart';
 import 'package:hec_eservices/utils/MyColors.dart';
 
-import '../Widgets/fab.dart';
+import '../../Widgets/fab.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({Key? key}) : super(key: key);
@@ -65,7 +65,7 @@ class _NotificationPageState extends State<NotificationPage> {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) {
                 return index == 0
-                    ? MyHomePage()
+                    ? Dashboard()
                     : index == 1
                         ? ProfilePage()
                         : MorePage();

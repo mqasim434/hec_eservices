@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hec_eservices/Models/ApplicationModel.dart';
 import 'package:hec_eservices/Models/TemplateModel.dart';
+import 'package:hec_eservices/utils/MyColors.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import '../utils/MyColors.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:path/path.dart' as path;
 
 class PlaceQR extends StatefulWidget {
   PlaceQR({
@@ -36,43 +36,33 @@ class _PlaceQRState extends State<PlaceQR> {
 
   Future<void> captureAndSaveImage() async {
     try {
-      Uint8List? imageBytes = await _screenshotController.capture(
+       _imageBytes = await _screenshotController.capture(
         pixelRatio: 3.0, // Adjust pixelRatio as needed
         delay: Duration(milliseconds: 10), // Delay before capturing
       );
 
-      // Request permission to access external storage
-      var status = await Permission.storage.request();
+    }catch (e) {
+      Fluttertoast.showToast(
+          msg: 'Widget capture failed', toastLength: Toast.LENGTH_SHORT);
+      print('Error capturing the widget as an image: $e');
+    }
+    var status = await Permission.storage.request();
 
-      if (status.isGranted) {
-        // Get the external storage directory (usually the device's Pictures folder)
-        final directory = await getExternalStorageDirectory();
+    if (status.isGranted) {
+      final directory = await getExternalStorageDirectory();
 
-        if (directory != null) {
-          // Specify the file path to save the image in the Pictures directory
-          final filePath = path.join(directory.path, 'captured_image.png');
-
-          // Save the image bytes to the specified file path
-          File(filePath).writeAsBytesSync(imageBytes!);
-
-          setState(() {
-            _imageBytes = imageBytes;
-          });
-
-          Fluttertoast.showToast(
-              msg: 'Widget captured and saved as an image to: $filePath',
-              toastLength: Toast.LENGTH_SHORT);
-          print('Widget captured and saved as an image to: $filePath');
+      if (directory != null) {
+        final result = await ImageGallerySaver.saveImage(_imageBytes!);
+        if (result != null && result['isSuccess'] == true) {
+          // Image was successfully saved to the gallery.
+          print('Image saved to gallery');
         } else {
-          print('Error: External storage directory is null.');
+          // There was an error saving the image.
+          print('Failed to save image to gallery');
         }
       } else {
         print('Permission denied to access storage.');
       }
-    } catch (e) {
-      Fluttertoast.showToast(
-          msg: 'Widget capture failed', toastLength: Toast.LENGTH_SHORT);
-      print('Error capturing and saving the widget as an image: $e');
     }
   }
 

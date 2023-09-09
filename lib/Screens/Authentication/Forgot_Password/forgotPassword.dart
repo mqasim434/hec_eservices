@@ -1,10 +1,14 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:hec_eservices/Screens/getOTP.dart';
+import 'package:hec_eservices/Models/UserModel.dart';
+import 'package:hec_eservices/Screens/Profile_Screens/perosnalDetails.dart';
+import 'package:hec_eservices/Screens/Authentication/Forgot_Password/getOTP.dart';
+import 'package:hec_eservices/Screens/Navbar_Screens/dashboard.dart';
+import 'package:hec_eservices/Screens/Navbar_Screens/profile.dart';
 import 'package:hec_eservices/utils/MyColors.dart';
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server/gmail.dart';
+import 'package:http/http.dart' as http;
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({Key? key}) : super(key: key);
@@ -19,9 +23,38 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   bool rememberMe = false;
 
   TextEditingController emailController = TextEditingController();
-  String email = '';
   String otp = '';
 
+  Future sendOTP({
+    required String name,
+    required String email,
+  }) async {
+
+    String service_id = 'service_cz7ulau';
+    String template_id = 'template_9w0m10v';
+    String user_id = 'Wg5cg5VOTDXOCCgHZ';
+    final random = Random();
+    otp = (random.nextInt(9000) + 1000).toString();
+
+    var response = await http.post(
+      Uri.parse('https://api.emailjs.com/api/v1.0/email/send'),
+      headers: {
+        'origin' : 'http://localhost',
+        'Content-Type' : 'application/json',
+      },
+      body: json.encode({
+        'service_id': service_id,
+        'template_id': template_id,
+        'user_id': user_id,
+        'template_params': {
+          'to_email': email,
+          'to_name': name,
+          'user_message': otp,
+        }
+      }),
+    );
+    print(response.body);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,10 +118,10 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     margin: const EdgeInsets.only(top: 10),
                     child: TextFormField(
                       controller: emailController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           labelText: 'Email',
-                          contentPadding: const EdgeInsets.all(15),
-                          border: const OutlineInputBorder()),
+                          contentPadding: EdgeInsets.all(15),
+                          border: OutlineInputBorder()),
                     ),
                   ),
                   const SizedBox(
@@ -97,11 +130,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   Align(
                     child: InkWell(
                         onTap: () {
-                          email = emailController.text.toString();
+                          sendOTP(name: 'name', email: emailController.text.toString());
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => OTPScreen(),
+                              builder: (context) => OTPScreen(otp: otp,email: emailController.text.toString(),),
                             ),
                           );
                         },
@@ -115,7 +148,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                 child: Text(
                               "Send Code",
                               style: TextStyle(color: Colors.white),
-                            )))),
+                            ),),),),
                   )
                 ],
               ),

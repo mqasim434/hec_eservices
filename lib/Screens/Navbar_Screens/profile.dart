@@ -2,26 +2,24 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hec_eservices/Models/UserModel.dart';
-import 'package:hec_eservices/Screens/homepage.dart';
-import 'package:hec_eservices/Screens/morePage.dart';
-import 'package:hec_eservices/Screens/notificationPage.dart';
+import 'package:hec_eservices/Screens/Navbar_Screens/dashboard.dart';
+import 'package:hec_eservices/Screens/Navbar_Screens/morePage.dart';
+import 'package:hec_eservices/Screens/Navbar_Screens/notificationPage.dart';
 import 'package:hec_eservices/Widgets/bottomNav.dart';
 import 'package:hec_eservices/utils/MyColors.dart';
 import 'package:hec_eservices/Widgets/toffee.dart';
 import 'package:hec_eservices/Widgets/bottomSheet.dart';
 import 'package:image_picker/image_picker.dart';
-import '../Widgets/fab.dart';
-import '../utils/config.dart';
-import 'Profile_Screens/contactDetails.dart';
-import 'Profile_Screens/perosnalDetails.dart';
-import 'Profile_Screens/Education_Details/educationPage.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import '../../Widgets/fab.dart';
+import '../../utils/config.dart';
+import '../Profile_Screens/contactDetails.dart';
+import '../Profile_Screens/perosnalDetails.dart';
+import '../Profile_Screens/Education_Details/educationPage.dart';
 import 'package:http/http.dart' as http;
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  static UserModel currentUser = UserModel();
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -34,7 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   final picker = ImagePicker();
 
-  UserModel currentUser = UserModel();
+
 
   Future<dynamic> getUserData() async {
     try {
@@ -45,10 +43,9 @@ class _ProfilePageState extends State<ProfilePage> {
       var user = await http.get(url);
       print("User:$user");
       if (user.statusCode == 200) {
-        currentUser = UserModel.fromJson(json.decode(user.body));
+        ProfilePage.currentUser = UserModel.fromJson(json.decode(user.body));
         isLoading = false;
         setState(() {
-
         });
       } else {
         print('User Not Found');
@@ -58,6 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+
   @override
   void initState() {
     // TODO: implement initState
@@ -65,15 +63,27 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
   }
 
+  void getProfilePic()async{
+    FirebaseStorage storage =
+        FirebaseStorage
+            .instance;
+    String imagePath =
+        '${UserModel.CurrentUserCnic}/profile_pic/${UserModel.CurrentUserCnic}.png';
+    Reference ref = storage
+        .ref()
+        .child(imagePath);
+    profilePicLink = await ref.getDownloadURL();
+  }
+
   @override
   Widget build(BuildContext context) {
-    profilePicLink = currentUser.imageUrl.toString();
+    getProfilePic();
     print('Profile Link: $profilePicLink');
     ImagePicker pick = ImagePicker();
     return Scaffold(
       body: Scaffold(
         body: isLoading
-            ? Center(
+            ? const Center(
                 child: CircularProgressIndicator(),
               )
             : Stack(
@@ -115,11 +125,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                   children: [
                                     CircleAvatar(
                                       radius: 60,
-                                      child: profilePicLink == 'null'
-                                          ? const Icon(Icons.add_a_photo)
-                                          : Image.network(
-                                              profilePicLink.toString(),
-                                            ),
+                                      backgroundImage: profilePicLink != ''?NetworkImage(
+                                        profilePicLink.toString()
+                                      ):NetworkImage('https://cdn-icons-png.flaticon.com/512/4211/4211763.png')
                                     ),
                                     Align(
                                         alignment: Alignment.bottomRight,
@@ -142,7 +150,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                           FirebaseStorage
                                                               .instance;
                                                       String imagePath =
-                                                          '${UserModel.CurrentUserCnic}/profile_pic/${DateTime.now().millisecondsSinceEpoch}.jpg';
+                                                          '${UserModel.CurrentUserCnic}/profile_pic/${UserModel.CurrentUserCnic}.png';
                                                       Reference ref = storage
                                                           .ref()
                                                           .child(imagePath);
@@ -177,7 +185,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                           FirebaseStorage
                                                               .instance;
                                                       String imagePath =
-                                                          '${UserModel.CurrentUserCnic}/profile_pic/${DateTime.now().millisecondsSinceEpoch}.jpg';
+                                                          '${UserModel.CurrentUserCnic}/profile_pic/${UserModel.CurrentUserCnic}.png';
                                                       Reference ref = storage
                                                           .ref()
                                                           .child(imagePath);
@@ -217,7 +225,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             Align(
                                 child: Text(
-                              "${currentUser.firstName.toString()} ${currentUser.lastName.toString()}",
+                              "${ProfilePage.currentUser.firstName.toString()} ${ProfilePage.currentUser.lastName.toString()}",
                               style: Theme.of(context)
                                   .textTheme
                                   .headline6!
@@ -225,7 +233,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             )),
                             Align(
                                 child: Text(
-                              currentUser.email.toString(),
+                                  ProfilePage.currentUser.email.toString(),
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText2!
@@ -233,7 +241,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             )),
                             Align(
                                 child: Text(
-                              currentUser.cnic.toString(),
+                                  ProfilePage.currentUser.cnic.toString(),
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText2!
@@ -301,7 +309,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   )
                 ],
               ),
-        floatingActionButton: AssistFAB(),
+        floatingActionButton: const AssistFAB(),
       ),
       bottomNavigationBar: MyBottomNav(
           initialSelectedIndex: 1,
@@ -310,7 +318,7 @@ class _ProfilePageState extends State<ProfilePage> {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) {
                     return index == 0
-                        ?  MyHomePage()
+                        ?  Dashboard()
                         : index == 2
                         ? const NotificationPage()
                         : const MorePage();
@@ -319,7 +327,7 @@ class _ProfilePageState extends State<ProfilePage> {
           }),
       extendBody: true,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: CenterDockedFAB(),
+      floatingActionButton: const CenterDockedFAB(),
     );
   }
 }

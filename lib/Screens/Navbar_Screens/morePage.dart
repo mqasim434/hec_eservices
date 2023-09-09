@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hec_eservices/Screens/homepage.dart';
-import 'package:hec_eservices/Screens/notificationPage.dart';
-import 'package:hec_eservices/Screens/profile.dart';
+import 'package:hec_eservices/Screens/Navbar_Screens/dashboard.dart';
+import 'package:hec_eservices/Screens/Navbar_Screens/notificationPage.dart';
+import 'package:hec_eservices/Screens/Navbar_Screens/profile.dart';
 import 'package:hec_eservices/Widgets/bottomNav.dart';
 import 'package:hec_eservices/Widgets/bottomSheet.dart';
 import 'package:hec_eservices/Widgets/toffee.dart';
 import 'package:hec_eservices/utils/MyColors.dart';
 
-import '../Widgets/fab.dart';
-import 'More_Screens/faq.dart';
-import 'More_Screens/hecContact.dart';
-import 'More_Screens/settings.dart';
-import 'More_Screens/trackComplaint.dart';
-import 'More_Screens/userGuide.dart';
+import '../../Widgets/fab.dart';
+import '../More_Screens/faq.dart';
+import '../More_Screens/hecContact.dart';
+import '../More_Screens/settings.dart';
+import '../More_Screens/trackComplaint.dart';
+import '../More_Screens/userGuide.dart';
 
 class MorePage extends StatefulWidget {
   const MorePage({Key? key}) : super(key: key);
@@ -122,7 +122,7 @@ class _MorePageState extends State<MorePage> {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) {
                 return index == 0
-                    ? MyHomePage()
+                    ? Dashboard()
                     : index == 1
                         ? ProfilePage()
                         : NotificationPage();

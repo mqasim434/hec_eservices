@@ -3,8 +3,8 @@ import 'package:hec_eservices/Widgets/bottomSheet.dart';
 import 'package:hec_eservices/Widgets/fab.dart';
 import 'package:hec_eservices/Widgets/bottomNav.dart';
 import 'package:hec_eservices/Widgets/informationCard.dart';
-import 'package:hec_eservices/Screens/homepage.dart';
-import 'package:hec_eservices/Screens/notificationPage.dart';
+import 'package:hec_eservices/Screens/Navbar_Screens/dashboard.dart';
+import 'package:hec_eservices/Screens/Navbar_Screens/notificationPage.dart';
 import 'package:hec_eservices/Models/UserModel.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -323,10 +323,10 @@ class _ContactDetailsState extends State<ContactDetails> {
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) {
                     return index == 0
-                        ? MyHomePage()
+                        ? Dashboard()
                         : index == 2
                             ? NotificationPage()
-                            : MyHomePage();
+                            : Dashboard();
                   }));
                 }),
           );

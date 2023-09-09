@@ -10,9 +10,9 @@ import '../../Widgets/bottomNav.dart';
 import '../../Widgets/fab.dart';
 import '../../Widgets/rectangleToggle.dart';
 import '../../utils/MyColors.dart';
-import '../homepage.dart';
-import '../notificationPage.dart';
-import '../profile.dart';
+import '../Navbar_Screens/dashboard.dart';
+import '../Navbar_Screens/notificationPage.dart';
+import '../Navbar_Screens/profile.dart';
 
 class DocumentsDetails extends StatefulWidget {
   const DocumentsDetails({Key? key}) : super(key: key);
@@ -215,9 +215,9 @@ class _DocumentsDetailsState extends State<DocumentsDetails> {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) {
                 return index == 0
-                    ? MyHomePage()
+                    ? Dashboard()
                     : index == 1
-                        ? const ProfilePage()
+                        ?  ProfilePage()
                         : const NotificationPage();
               }));
             }

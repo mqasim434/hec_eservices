@@ -10,8 +10,8 @@ import '../../Widgets/fab.dart';
 import '../../Widgets/informationCard.dart';
 import '../../Widgets/rectangleToggle.dart';
 import '../../utils/config.dart';
-import '../homepage.dart';
-import '../notificationPage.dart';
+import '../Navbar_Screens/dashboard.dart';
+import '../Navbar_Screens/notificationPage.dart';
 
 class PersonalDetails extends StatefulWidget {
   const PersonalDetails({Key? key}) : super(key: key);
@@ -402,10 +402,10 @@ class _PersonalDetailsState extends State<PersonalDetails> {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) {
               return index == 0
-                  ? MyHomePage()
+                  ? Dashboard()
                   : index == 2
                       ? const NotificationPage()
-                      : MyHomePage();
+                      : Dashboard();
             }));
           }),
     );

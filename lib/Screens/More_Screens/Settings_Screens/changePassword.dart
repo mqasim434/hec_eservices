@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:hec_eservices/Screens/More_Screens/Settings_Screens/accountSettings.dart';
-import 'package:hec_eservices/Screens/homepage.dart';
-import 'package:hec_eservices/Screens/morePage.dart';
-import 'package:hec_eservices/Screens/notificationPage.dart';
-import 'package:hec_eservices/Screens/profile.dart';
+import 'package:hec_eservices/Screens/Navbar_Screens/dashboard.dart';
+import 'package:hec_eservices/Screens/Navbar_Screens/morePage.dart';
+import 'package:hec_eservices/Screens/Navbar_Screens/notificationPage.dart';
+import 'package:hec_eservices/Screens/Navbar_Screens/profile.dart';
 import 'package:hec_eservices/utils/MyColors.dart';
 
 import 'package:http/http.dart' as http;
@@ -246,7 +246,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MyHomePage(),
+                          builder: (context) => Dashboard(),
                         ),
                       );
                     },
@@ -266,7 +266,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ProfilePage(),
+                          builder: (context) => ProfilePage(),
                         ),
                       );
                     },

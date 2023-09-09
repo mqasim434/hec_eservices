@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'signIn.dart';
-import 'Register.dart';
+import 'Authentication/signIn.dart';
+import 'Authentication/Register.dart';
 import 'package:hec_eservices/utils/MyColors.dart';
 import 'dart:math';
 

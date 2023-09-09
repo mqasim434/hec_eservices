@@ -1,32 +1,24 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
-
-import 'package:document_scanner_flutter/configs/configs.dart';
-import 'package:document_scanner_flutter/document_scanner_flutter.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
-// import 'package:hec_eservices/Image_Crop/placeQR.dart';
-import 'package:hec_eservices/Models/TemplateModel.dart';
 import 'package:hec_eservices/Screens/Applicatins_Screens/detailsOfDegree.dart';
 import 'package:hec_eservices/Screens/Applicatins_Screens/questionaire.dart';
 import 'package:hec_eservices/Screens/Applicatins_Screens/verifyDetails.dart';
-import 'package:hec_eservices/utils/config.dart';
+import 'package:hec_eservices/Screens/Degree_Verification/placeQR.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 
-import '../../Image_Crop/placeQR.dart';
 import '../../Models/UserModel.dart';
-import '../../Models/TemplateModel.dart';
 import '../../Widgets/bottomNav.dart';
-import '../../Widgets/bottomSheet.dart';
 import '../../Widgets/fab.dart';
 import '../../utils/MyColors.dart';
-import '../homepage.dart';
-import '../notificationPage.dart';
-import '../profile.dart';
+import '../Navbar_Screens/dashboard.dart';
+import '../Navbar_Screens/notificationPage.dart';
+import '../Navbar_Screens/profile.dart';
 
 class UploadDocs extends StatefulWidget {
   const UploadDocs({Key? key}) : super(key: key);
@@ -373,9 +365,9 @@ class _UploadDocsState extends State<UploadDocs> {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) {
                 return index == 0
-                    ? MyHomePage()
+                    ? Dashboard()
                     : index == 1
-                        ? const ProfilePage()
+                        ? ProfilePage()
                         : const NotificationPage();
               }));
             }

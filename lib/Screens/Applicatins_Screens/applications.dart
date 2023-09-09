@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-
 import '../../Models/ApplicationModel.dart';
 import '../../Widgets/bottomNav.dart';
 import '../../Widgets/fab.dart';
-import '../homepage.dart';
-import '../notificationPage.dart';
-import '../profile.dart';
+import '../Navbar_Screens/dashboard.dart';
+import '../Navbar_Screens/notificationPage.dart';
+import '../Navbar_Screens/profile.dart';
 
 class MyApplications extends StatefulWidget {
   const MyApplications({Key? key}) : super(key: key);
@@ -17,12 +16,9 @@ class MyApplications extends StatefulWidget {
 }
 
 class _MyApplicationsState extends State<MyApplications> {
-
-
-
   @override
   Widget build(BuildContext context) {
-    final bool showFab = MediaQuery.of(context).viewInsets.bottom==0.0;
+    final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
     return Scaffold(
       body: Scaffold(
         appBar: AppBar(
@@ -34,47 +30,43 @@ class _MyApplicationsState extends State<MyApplications> {
             style: TextStyle(color: Colors.black),
           ),
         ),
-        floatingActionButton:showFab?const AssistFAB():null,
+        floatingActionButton: showFab ? const AssistFAB() : null,
         body: Container(
           padding: const EdgeInsets.all(10),
           child: CustomScrollView(
-
             slivers: [
-              SliverAppBar(
-                titleSpacing: 0,
-                toolbarHeight: 60,
-                backgroundColor: Colors.white,
-                floating: true,
-                automaticallyImplyLeading: false,
-                title:
-                // Search Field
-                TextFormField(
-                  decoration: const InputDecoration(
-                      labelText: "Search by Application ID",
-                      contentPadding: EdgeInsets.all(15),
-                      border: OutlineInputBorder()),
-                ),
-              )
-              ,
+              // SliverAppBar(
+              //   titleSpacing: 0,
+              //   toolbarHeight: 60,
+              //   backgroundColor: Colors.white,
+              //   floating: true,
+              //   automaticallyImplyLeading: false,
+              //   title:
+              //   // Search Field
+              //   TextFormField(
+              //     decoration: const InputDecoration(
+              //         labelText: "Search by Application ID",
+              //         contentPadding: EdgeInsets.all(15),
+              //         border: OutlineInputBorder()),
+              //   ),
+              // ),
               SliverList(
-                  delegate: SliverChildBuilderDelegate((context,int index){
-                    return ApplicationCard(
-                      onPressed: (){
-                        // Navigator.push(context, MaterialPageRoute(builder: (context){return DetailsofDegree();}));
-                      },
-                      Status: "Saved",
-                      date: DateTime.now(),
-                      Service: "Degree Attestation Service",
-                      ApplicationID: '00000${index+1}',
-                    );
-                  },childCount: Application.applicationCount
-                  ))
+                  delegate: SliverChildBuilderDelegate((context, int index) {
+                return ApplicationCard(
+                  onPressed: () {
+                    // Navigator.push(context, MaterialPageRoute(builder: (context){return DetailsofDegree();}));
+                  },
+                  Status: "Saved",
+                  date: DateTime.now(),
+                  Service: "Degree Attestation Service",
+                  ApplicationID: '00000${index + 1}',
+                );
+              }, childCount: Application.applicationCount))
             ],
-
           ),
         ),
       ),
-      floatingActionButton:showFab? const CenterDockedFAB():null,
+      floatingActionButton: showFab ? const CenterDockedFAB() : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       extendBody: true,
       bottomNavigationBar: MyBottomNav(
@@ -83,12 +75,12 @@ class _MyApplicationsState extends State<MyApplications> {
             if (index != 3) {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) {
-                    return index == 0
-                        ? MyHomePage()
-                        : index == 1
-                        ? const ProfilePage()
+                return index == 0
+                    ? Dashboard()
+                    : index == 1
+                        ? ProfilePage()
                         : const NotificationPage();
-                  }));
+              }));
             }
           }),
     );
@@ -123,9 +115,7 @@ class ApplicationCard extends StatelessWidget {
               color: Colors.white,
               boxShadow: [
                 const BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 5,
-                    offset: Offset(0, 3))
+                    color: Colors.black12, blurRadius: 5, offset: Offset(0, 3))
               ]),
           child: Column(
             children: [
@@ -133,9 +123,12 @@ class ApplicationCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 5, horizontal: 10),
-                    child: Text(Status,style: TextStyle(color: Colors.amber[800]),),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    child: Text(
+                      Status,
+                      style: TextStyle(color: Colors.amber[800]),
+                    ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       color: Colors.orange[50],

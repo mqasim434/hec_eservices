@@ -8,8 +8,8 @@ import '../../../Widgets/bottomNav.dart';
 import '../../../Widgets/fab.dart';
 import '../../../Widgets/informationCard.dart';
 import '../../Applicatins_Screens/detailsOfDegree.dart';
-import '../../homepage.dart';
-import '../../notificationPage.dart';
+import '../../Navbar_Screens/dashboard.dart';
+import '../../Navbar_Screens/notificationPage.dart';
 import 'educationDetails.dart';
 import 'package:http/http.dart' as http;
 
@@ -151,10 +151,10 @@ class _EducationPageState extends State<EducationPage> {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
             return index == 0
-                ? MyHomePage()
+                ? Dashboard()
                 : index == 2
                     ? const NotificationPage()
-                    : MyHomePage();
+                    : Dashboard();
           }));
         },
       ),

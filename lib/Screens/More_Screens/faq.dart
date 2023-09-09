@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:hec_eservices/Screens/morePage.dart';
-import 'package:hec_eservices/Screens/profile.dart';
+import 'package:hec_eservices/Screens/Navbar_Screens/morePage.dart';
+import 'package:hec_eservices/Screens/Navbar_Screens/profile.dart';
 
 import 'package:hec_eservices/Widgets/bottomNav.dart';
 import 'package:hec_eservices/Widgets/fab.dart';
 import 'package:hec_eservices/utils/MyColors.dart';
 
-import '../homepage.dart';
-import 'package:hec_eservices/Screens/notificationPage.dart';
+import '../Navbar_Screens/dashboard.dart';
+import 'package:hec_eservices/Screens/Navbar_Screens/notificationPage.dart';
 
 class FAQ extends StatefulWidget {
   const FAQ({ Key? key }) : super(key: key);

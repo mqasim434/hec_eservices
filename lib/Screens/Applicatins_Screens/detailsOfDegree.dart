@@ -12,8 +12,8 @@ import '../../Widgets/informationCard.dart';
 import '../../utils/MyColors.dart';
 import '../../utils/config.dart';
 import '../Profile_Screens/Education_Details/educationDetails.dart';
-import '../homepage.dart';
-import '../notificationPage.dart';
+import '../Navbar_Screens/dashboard.dart';
+import '../Navbar_Screens/notificationPage.dart';
 import 'attestationDetails.dart';
 import 'package:http/http.dart' as http;
 
@@ -224,10 +224,10 @@ class _DetailsofDegreeState extends State<DetailsofDegree> {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
             return index == 0
-                ? MyHomePage()
+                ? Dashboard()
                 : index == 2
                     ? const NotificationPage()
-                    : MyHomePage();
+                    : Dashboard();
           }));
         },
       ),

@@ -1,12 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:fluttericon/linearicons_free_icons.dart';
-import 'package:hec_eservices/Image_Crop/verifyDegree.dart';
 import 'package:hec_eservices/Screens/Applicatins_Screens/detailsOfDegree.dart';
+import 'package:hec_eservices/Screens/Degree_Verification/verifyDegree.dart';
 
 import 'package:hec_eservices/utils/MyColors.dart';
 
@@ -26,7 +24,7 @@ class CenterDockedFAB extends StatelessWidget {
           showDialog(
               context: context,
               builder: (context) {
-                return const VerifyDegree();
+                return VerifyDocument();
               });
         },
         tooltip: 'Increment',
@@ -47,41 +45,21 @@ class AssistFAB extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 70),
-      child: SpeedDial(
-        backgroundColor: const Color(0xff344164),
-        renderOverlay: false,
-        overlayOpacity: 0,
-        buttonSize: const Size(45, 45),
-        childrenButtonSize: const Size(45, 45),
-        children: [
-          SpeedDialChild(
-              child: const Icon(
-                FontAwesome5.file_alt,
-                size: 18,
-              ),
-              label: "Read Instructions"),
-          SpeedDialChild(
-              child: const Icon(
-                LineariconsFree.download,
-                size: 18,
-              ),
-              label: "Download Manual"),
-          SpeedDialChild(
-              child: SvgPicture.asset(
-                'assets/chat.svg',
-                width: 18,
-              ),
-              label: "Online Help"),
-          SpeedDialChild(
-              child: SvgPicture.asset(
-                'assets/chat.svg',
-                width: 18,
-              ),
-              label: "Chat"),
-          SpeedDialChild(
-              onTap: () {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 70.0,left: 30.0),
+          child: Container(
+            width: 45,
+            height: 45,
+            decoration: BoxDecoration(boxShadow: const [
+              BoxShadow(blurRadius: 5, offset: Offset(0, 4), color: Colors.black26)
+            ], borderRadius: BorderRadius.circular(50), color: MyColors.blueColor),
+            child: FloatingActionButton(
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -89,17 +67,53 @@ class AssistFAB extends StatelessWidget {
                   ),
                 );
               },
-              child: const Icon(
-                Icons.add,
-              ),
-              label: "New Application"),
-        ],
-        child: SvgPicture.asset(
-          'assets/assist.svg',
-          color: Colors.white,
-          height: 30,
+              tooltip: 'Increment',
+              child:Icon(Icons.add),
+            ),
+          ),
         ),
-      ),
+        Container(
+          margin: const EdgeInsets.only(bottom: 70),
+          child: SpeedDial(
+            backgroundColor: const Color(0xff344164),
+            renderOverlay: false,
+            overlayOpacity: 0,
+            buttonSize: const Size(45, 45),
+            childrenButtonSize: const Size(45, 45),
+            children: [
+              SpeedDialChild(
+                  child: const Icon(
+                    FontAwesome5.file_alt,
+                    size: 18,
+                  ),
+                  label: "Read Instructions"),
+              SpeedDialChild(
+                  child: const Icon(
+                    LineariconsFree.download,
+                    size: 18,
+                  ),
+                  label: "Download Manual"),
+              SpeedDialChild(
+                  child: SvgPicture.asset(
+                    'assets/chat.svg',
+                    width: 18,
+                  ),
+                  label: "Online Help"),
+              SpeedDialChild(
+                  child: SvgPicture.asset(
+                    'assets/chat.svg',
+                    width: 18,
+                  ),
+                  label: "Chat"),
+            ],
+            child: SvgPicture.asset(
+              'assets/assist.svg',
+              color: Colors.white,
+              height: 30,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
